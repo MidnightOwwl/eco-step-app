@@ -6,5 +6,7 @@ public enum CarFuelType
     Diesel,
     Electric,
     Hybrid,
-    Hydrogen
+    Hydrogen,
+    Methane,
+    Propane
 }
