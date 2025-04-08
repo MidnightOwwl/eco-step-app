@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace projjj;
+namespace EcoStepBackend.Auth;
 
 public class AppDbContext : DbContext
 {
