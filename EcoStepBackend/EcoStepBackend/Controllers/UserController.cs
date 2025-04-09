@@ -4,8 +4,10 @@ namespace EcoStepBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]/{id:long}")]
-public class UserController : ControllerBase
+public class UserController(AppDbContext db) : ControllerBase
 {
+    private readonly AppDbContext _db = db;
+    
     [HttpGet("")]
     public IActionResult GetUser(long id)
     {

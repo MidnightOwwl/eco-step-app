@@ -4,8 +4,10 @@ namespace EcoStepBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class SurveyController : ControllerBase
+public class SurveyController(AppDbContext db) : ControllerBase
 {
+    private readonly AppDbContext _db = db;
+    
     [HttpGet("{userId:long}")]
     public IActionResult GetAllSurveys(long userId)
     {
