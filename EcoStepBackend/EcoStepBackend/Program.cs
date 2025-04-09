@@ -43,7 +43,20 @@ internal static class Program
     }
     
     private static void BuildServices()
-    {        
+    {
+        // TODO: разобраться с AllowAnyHeader, AllowAnyMethod - небезопасно
+        // TODO: понять, надо ли CORS нам вообще
+        
+        _builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+        
         _builder.Services.AddControllers();
         _builder.Services.AddEndpointsApiExplorer();
         _builder.Services.AddSwaggerGen();
@@ -58,7 +71,10 @@ internal static class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        
+        // TODO: разобраться с CORS
+        app.UseCors();
+        
         app.MapGet("/", () => "Приложение запущено");
         app.UseAuthentication();
         app.UseAuthorization();
