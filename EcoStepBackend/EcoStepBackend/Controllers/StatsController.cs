@@ -10,7 +10,7 @@ public class StatsController(AppDbContext db) : ControllerBase
     private readonly AppDbContext _db = db;
     
     [HttpGet("")]
-    public IActionResult GetStats(long userId)
+    public IActionResult GetAllSurveys(long userId)
     {
         var user = _db.Users
             .Include(u => u.Surveys)
