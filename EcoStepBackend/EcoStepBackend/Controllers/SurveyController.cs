@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcoStepBackend.Controllers;
 
@@ -17,7 +18,20 @@ public class SurveyController(AppDbContext db) : ControllerBase
     [HttpPost]
     public IActionResult CreateSurvey([FromBody] Survey survey)
     {
-        return Ok();
+        survey.CompletedAt = DateTime.UtcNow;
+        var userId = survey.UserId;
+        
+        var user = _db.Users
+            .Include(u => u.Surveys)
+            .FirstOrDefault(u => u.Id == userId);
+        
+        if (user is null)
+            return NotFound();
+        
+        user.Surveys.Add(survey);
+        _db.SaveChanges();
+
+        return CreatedAtAction(nameof(GetAllSurveys), new { userId = survey.UserId }, survey);
     }
 
     [HttpPut("{id:long}")]
