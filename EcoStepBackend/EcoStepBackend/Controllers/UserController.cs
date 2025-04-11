@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 namespace EcoStepBackend.Controllers;
 
 [ApiController]
-[Route("api/[controller]/{id:long}")]
+[Route("api/[controller]")]
 public class UserController(AppDbContext db) : ControllerBase
 {
     private readonly AppDbContext _db = db;
 
-    [HttpGet("")]
+    [HttpGet("{id:long}")]
     public IActionResult GetUser(long id)
     {
         var user = _db.Users
@@ -22,7 +22,7 @@ public class UserController(AppDbContext db) : ControllerBase
         return Ok(user);
     }
 
-    [HttpPut("household")]
+    [HttpPut("{id:long}/household")]
     public IActionResult UpdateHousehold(long id, [FromBody] Household updated)
     {
         var user = _db.Users
@@ -40,5 +40,15 @@ public class UserController(AppDbContext db) : ControllerBase
         _db.SaveChanges();
 
         return Ok(user.Household);
+    }
+    
+    [HttpPost("create")]
+    public IActionResult CreateUser([FromBody] User user)
+    {
+        user.Surveys = new List<Survey>();
+        _db.Users.Add(user);
+        _db.SaveChanges();
+
+        return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
     }
 }
