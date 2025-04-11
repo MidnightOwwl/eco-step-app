@@ -13,7 +13,15 @@ public class User
     public bool IsFoodPlantOk { get; set; }
     public bool IsWaterOk { get; set; }
     public bool IsElectricityOk { get; set; }
-    public bool IsCarOk { get; set; }
+    
+    public bool IsCarPetrolOk { get; set; }
+    public bool IsCarDieselOk { get; set; }
+    public bool IsCarElectricOk { get; set; }
+    public bool IsCarHybridOk { get; set; }
+    public bool IsCarHydrogenOk { get; set; }
+    public bool IsCarMethaneOk { get; set; }
+    public bool IsCarPropaneOk { get; set; }
+    
     public bool IsPublicTransportOk { get; set; }
     public bool IsAirplaneOk { get; set; }
     
