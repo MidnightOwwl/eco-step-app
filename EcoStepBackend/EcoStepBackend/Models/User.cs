@@ -23,6 +23,7 @@ public class User
     public bool IsCarPropaneOk { get; set; }
     
     public bool IsPublicTransportOk { get; set; }
+    public bool IsTrainOk { get; set; }
     public bool IsAirplaneOk { get; set; }
     
     public bool IsFoodWasteOk { get; set; }
