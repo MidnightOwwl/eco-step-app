@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcoStepBackend.Controllers;
 
@@ -11,6 +12,13 @@ public class StatsController(AppDbContext db) : ControllerBase
     [HttpGet("{userId:long}")]
     public IActionResult GetStats(long userId)
     {
-        return Ok();
+        var user = _db.Users
+            .Include(u => u.Surveys)
+            .FirstOrDefault(u => u.Id == userId);
+        
+        if (user is null)
+            return NotFound();
+
+        return Ok(user.Surveys);
     }
 }
