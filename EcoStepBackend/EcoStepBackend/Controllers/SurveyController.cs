@@ -12,7 +12,34 @@ public class SurveyController(AppDbContext db) : ControllerBase
     [HttpGet("{userId:long}")]
     public IActionResult GetAllSurveys(long userId)
     {
-        return Ok();
+        var user = _db.Users
+            .Include(u => u.Surveys)
+            .FirstOrDefault(u => u.Id == userId);
+        
+        if (user is null)
+            return NotFound();
+
+        return Ok(user.Surveys);
+    }
+    
+    [HttpGet("{userId:long}/last-survey")]
+    public IActionResult GetLastSurvey(long userId)
+    {
+        var user = _db.Users
+            .Include(u => u.Surveys)
+            .FirstOrDefault(u => u.Id == userId);
+        
+        if (user is null)
+            return NotFound();
+
+        var lastSurvey = user.Surveys
+            .OrderByDescending(s => s.CompletedAt)
+            .FirstOrDefault();
+        
+        if (lastSurvey is null)
+            return NotFound();
+        
+        return Ok(lastSurvey);
     }
 
     [HttpPost]
@@ -32,11 +59,5 @@ public class SurveyController(AppDbContext db) : ControllerBase
         _db.SaveChanges();
 
         return CreatedAtAction(nameof(GetAllSurveys), new { userId = survey.UserId }, survey);
-    }
-
-    [HttpPut("{id:long}")]
-    public IActionResult UpdateSurvey(long id, [FromBody] Survey updated)
-    {
-        return Ok();
     }
 }
