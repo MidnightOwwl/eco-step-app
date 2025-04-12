@@ -1,4 +1,5 @@
 using System.Text;
+using EcoStepBackend.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
@@ -60,6 +61,15 @@ internal static class Program
         _builder.Services.AddControllers();
         _builder.Services.AddEndpointsApiExplorer();
         _builder.Services.AddSwaggerGen();
+        BuildValidators();
+    }
+
+    private static void BuildValidators()
+    {
+        _builder.Services.AddScoped<ISurveyDataValidator<FoodData>, FoodDataValidator>();
+        _builder.Services.AddScoped<ISurveyDataValidator<ResourceData>, ResourceDataValidator>();
+        _builder.Services.AddScoped<ISurveyDataValidator<TransportData>, TransportDataValidator>();
+        _builder.Services.AddScoped<ISurveyDataValidator<WasteData>, WasteDataValidator>();
     }
     
     private static void RunApp()
