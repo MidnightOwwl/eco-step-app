@@ -3,11 +3,17 @@
 public class TransportData
 {
     public long SurveyId { get; set; }
-    public double CarDistanceKm { get; set; }
-    public CarFuelType CarFuelType { get; set; }
     public double PublicTransportDistanceKm { get; set; }
     public double AirplaneDistanceKm { get; set; }
     public double TrainDistanceKm { get; set; }
+    
+    public double CarDistanceKmPetrol { get; set; }
+    public double CarDistanceKmDiesel { get; set; }
+    public double CarDistanceKmElectric { get; set; }
+    public double CarDistanceKmHybrid { get; set; }
+    public double CarDistanceKmHydrogen { get; set; }
+    public double CarDistanceKmMethane { get; set; }
+    public double CarDistanceKmPropane { get; set; }
     
     public const double CarDistanceKmPetrolPerDay = 28;
     public const double CarDistanceKmDieselPerDay = 32;
