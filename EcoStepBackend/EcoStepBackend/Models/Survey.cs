@@ -9,4 +9,5 @@ public class Survey
     public WasteData WasteData { get; set; }
     public TransportData TransportData { get; set; }
     public ResourceData ResourceData { get; set; }
+    public double ReportedDays { get; set; }
 }
