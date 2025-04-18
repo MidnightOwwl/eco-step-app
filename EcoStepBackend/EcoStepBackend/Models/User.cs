@@ -3,11 +3,11 @@
 public class User
 {
     public int Id { get; set; } 
-    public string Name { get; set; } 
-    public string Email { get; set; } 
-    public string PasswordHash { get; set; } 
+    public required string Name { get; set; } 
+    public string? Email { get; set; } 
+    public required string PasswordHash { get; set; } 
     public Household? Household { get; set; } 
-    public ICollection<Survey> Surveys { get; set; }
+    public ICollection<Survey> Surveys { get; set; } = new List<Survey>();
     
     public bool IsFoodMeatOk { get; set; }
     public bool IsFoodPlantOk { get; set; }

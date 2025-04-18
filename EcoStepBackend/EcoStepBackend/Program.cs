@@ -8,7 +8,7 @@ namespace EcoStepBackend;
 
 internal static class Program
 {
-    private static WebApplicationBuilder _builder;
+    private static WebApplicationBuilder _builder = null!;
     
     public static void Main(string[] args)
     {

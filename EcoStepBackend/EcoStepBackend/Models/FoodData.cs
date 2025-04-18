@@ -2,7 +2,8 @@
 
 public class FoodData
 {
-    public long SurveyId { get; set; }
+    public int Id { get; set; } 
+    public int SurveyId { get; set; }
     public double MeatEatenKg { get; set; }
     public double PlantEatenKg { get; set; }
     

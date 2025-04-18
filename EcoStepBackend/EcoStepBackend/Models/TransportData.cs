@@ -2,7 +2,9 @@
 
 public class TransportData
 {
-    public long SurveyId { get; set; }
+    public int Id { get; set; } 
+    
+    public int SurveyId { get; set; }
     public double PublicTransportDistanceKm { get; set; }
     public double AirplaneDistanceKm { get; set; }
     public double TrainDistanceKm { get; set; }
