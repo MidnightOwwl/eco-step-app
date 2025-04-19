@@ -26,65 +26,70 @@
             <button class="selector-button" data-target="costs" id="costs-selector-button">Costs</button>
         </div>
         <div class="surveys">
+            <!-- Food Survey -->
             <div class="survey-block food-survey survey-active" id="food">
                 <form class="survey-form">
                     <div class="form-inline">
-                        <label for="fque0" class="question">Time interval (days)</label>
-                        <input type="number" name="fque0">
+                        <label for="food-days" class="question">Time interval (days)</label>
+                        <input type="number" id="food-days" name="days" required>
                     </div>
                     <div class="form-inline">
-                        <label for="fque1" class="question">Vegetable food</label>
-                        <input type="number" name="fque1">
+                        <label for="food-vegetables" class="question">Vegetables (g)</label>
+                        <input type="number" id="food-vegetables" name="vegetables">
                     </div>
                     <div class="form-inline">
-                        <label for="fque2" class="question">Meat</label>
-                        <input type="number" name="fque2">              
+                        <label for="food-meat" class="question">Meat (g)</label>
+                        <input type="number" id="food-meat" name="meat">              
                     </div>
                     <div class="form-inline">
-                        <label for="fque3" class="question">Fish</label>
-                        <input type="number" name="fque3">
+                        <label for="food-fish" class="question">Fish (g)</label>
+                        <input type="number" id="food-fish" name="fish">
                     </div>
                     <button class="sur-button" id="food-sur-button">Submit</button>
                 </form>
             </div>
+
+            <!-- Wastes Survey -->
             <div class="survey-block wasetes-survey" id="wastes">
                 <form class="survey-form">
                     <div class="form-inline">
-                        <label for="wque0" class="question">Time interval (days)</label>
-                        <input type="number" name="wque0">
+                        <label for="waste-days" class="question">Time interval (days)</label>
+                        <input type="number" id="waste-days" name="days" required>
                     </div>
                     <div class="form-inline">
-                        <label for="wque1" class="question">Food wates</label>
-                        <input type="number" name="wque1">
+                        <label for="waste-food" class="question">Food waste (g)</label>
+                        <input type="number" id="waste-food" name="food_waste">
                     </div>
                     <div class="form-inline">
-                        <label for="wque2" class="question">Plastic wastes</label>
-                        <input type="number" name="wque2">
+                        <label for="waste-plastic" class="question">Plastic (g)</label>
+                        <input type="number" id="waste-plastic" name="plastic">
                     </div>
                     <div class="form-inline">
-                        <label for="wque3" class="question">Glass wastes</label>
-                        <input type="number" name="wque3">
+                        <label for="waste-glass" class="question">Glass (g)</label>
+                        <input type="number" id="waste-glass" name="glass">
                     </div>
                     <div class="form-inline">
-                        <label for="wque4" class="question">Paper wastes</label>
-                        <input type="number" name="wque4">
+                        <label for="waste-paper" class="question">Paper (g)</label>
+                        <input type="number" id="waste-paper" name="paper">
                     </div>
                     <div class="form-inline">
-                        <label for="wque5" class="question">Non-recycable</label>
-                        <input type="number" name="wque5">
+                        <label for="waste-nonrecyclable" class="question">Non-recyclable (g)</label>
+                        <input type="number" id="waste-nonrecyclable" name="non_recyclable">
                     </div>
                     <button class="sur-button" id="waastes-sur-button">Submit</button>
                 </form>
             </div>
+
+            <!-- Transport Survey -->
             <div class="survey-block transport-survey" id="transport">
                 <form class="survey-form">
                     <div class="form-inline">
-                        <label for="tque0" class="question">Time interval (days)</label>
-                        <input type="number" name="tque0">
+                        <label for="transport-days" class="question">Time interval (days)</label>
+                        <input type="number" id="transport-days" name="days" required>
                     </div>
                     <div class="form-inline">
-                        <label for="tque1" class="question">Fuel type</label> <!-- подумай -->
-                        <select name="tque1">
+                        <label for="transport-fuel" class="question">Fuel type</label>
+                        <select id="transport-fuel" name="fuel_type">
                             <option value="Petrol">Petrol</option>
                             <option value="Diesel">Diesel</option>
                             <option value="Electric">Electric</option>
@@ -95,53 +100,38 @@
                         </select>
                     </div>
                     <div class="form-inline">
-                        <label for="tque2" class="question">Car distance</label>
-                        <input type="number" name="tque2">
+                        <label for="transport-car" class="question">Car distance (km)</label>
+                        <input type="number" id="transport-car" name="car_distance">
                     </div>
                     <div class="form-inline">
-                        <label for="tque3" class="question">Public transport distance</label>
-                        <input type="number" name="tque3">
+                        <label for="transport-public" class="question">Public transport distance (km)</label>
+                        <input type="number" id="transport-public" name="public_transport">
                     </div>
                     <button class="sur-button" id="transport-sur-button">Submit</button>
                 </form>
             </div>
+
+            <!-- Costs Survey -->
             <div class="survey-block costs-survey" id="costs">
                 <form class="survey-form">
                     <div class="form-inline">
-                        <label for="cque0" class="question">Time interval (days)</label>
-                        <input type="number" name="cque0">
+                        <label for="costs-days" class="question">Time interval (days)</label>
+                        <input type="number" id="costs-days" name="days" required>
                     </div>
                     <div class="form-inline">
-                        <label for="cque1" class="question">Water</label>
-                        <input type="number" name="cque1">
+                        <label for="costs-water" class="question">Water consumption (l)</label>
+                        <input type="number" id="costs-water" name="water">
                     </div>
                     <div class="form-inline">
-                        <label for="cque2" class="question">Elcetricity</label>
-                        <input type="number" name="cque2">
+                        <label for="costs-electricity" class="question">Electricity (kWh)</label>
+                        <input type="number" id="costs-electricity" name="electricity">
                     </div>
                     <button class="sur-button" id="costs-sur-button">Submit</button>
                 </form>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/surveys.js"></script>
 </body>
-<script>
-    document.querySelectorAll('.selector-button').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetId = btn.getAttribute('data-target');
-            const targetBlock = document.getElementById(targetId);
-            
-            document.querySelectorAll('.survey-block').forEach(block => {
-                block.classList.remove('survey-active');               
-            });
-
-            targetBlock.classList.add('survey-active');
-            
-            document.querySelectorAll('.selector-button').forEach(b => {
-                b.classList.remove('selector-active');
-            });
-            
-            btn.classList.add('selector-active');
-        });
-    });
-</script>
+    

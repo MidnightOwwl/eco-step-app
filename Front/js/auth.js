@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
     const registrationForm = document.getElementById('registration-form');
     if (loginForm) {
-        authorizeUser(loginForm);
+        loginUser(loginForm);
     }
 
     if (registrationForm) {
-        authorizeUser(registrationForm);
+        registerUser(registrationForm);
     }
     
     // Выход из системы
@@ -24,12 +24,13 @@ document.addEventListener('DOMContentLoaded', function() {
         logoutLink.addEventListener('click', function(e) {
             e.preventDefault();
             sessionStorage.removeItem('username');
+            sessionStorage.removeItem('password');
             window.location.href = 'main.html';
         });
     }
 });
 
-function authorizeUser(form) {
+function registerUser(form) {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const username = document.getElementById('login').value;
@@ -37,10 +38,29 @@ function authorizeUser(form) {
         
         // TODO: Подключить бэк
         if (username && password) {
+            localStorage.setItem('username', username);
             sessionStorage.setItem('username', username);
+            localStorage.setItem('password', password);
             window.location.href = 'profile.html';
         } else {
             alert('Введите логин и пароль');
+        }
+    });
+}
+
+function loginUser(form) {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('login').value;
+        const password = document.getElementById('password').value;
+        
+        // TODO: Подключить бэк
+        if (localStorage.getItem('username') == username && localStorage.getItem('password') == password) {
+            sessionStorage.setItem('username', username);
+            sessionStorage.setItem('password', password);
+            window.location.href = 'profile.html';
+        } else {
+            alert('Your login or password is incorrect');
         }
     });
 }

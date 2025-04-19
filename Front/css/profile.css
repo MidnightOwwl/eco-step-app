@@ -186,6 +186,10 @@ select {
     padding-left: 20px;
 }
 
+.edit {
+    cursor: pointer;
+}
+
 ::selection {
     background-color: yellowgreen;
 }
