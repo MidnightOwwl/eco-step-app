@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>Data</title>
+    <link rel="stylesheet" href="css/main_styles.css">
+</head>
+
+<body>
+    <header class="container">
+        <span class="logo" href="#"><a href="main.html">EcoStep</a></span>
+        <nav class="menu">    
+            <a href="main.html">Home</a>
+            <a href="surveys.html">Surveys</a>
+            <a class="active" href="#">Data</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+
+    <div class="main-section container">
+        <div class="selector-block">
+            <button class="selector-button selector-active" data-target="food" id="food-selector-button">Food</button>
+            <button class="selector-button" data-target="wastes" id="wastes-selector-button">Wastes</button>
+            <button class="selector-button" data-target="transport" id="transport-selector-button">Transport</button>
+            <button class="selector-button" data-target="costs" id="costs-selector-button">Costs</button>
+        </div>
+        <div class="graphs">
+
+        </div>
+    <div>
+</body>
+<script>
+    document.querySelectorAll('.selector-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            // const targetId = btn.getAttribute('data-target');
+            // const targetBlock = document.getElementById(targetId);
+            
+            // document.querySelectorAll('.survey-block').forEach(block => {
+            //     block.classList.remove('survey-active');
+            //     // block.style.display = 'none';
+            // });
+
+            // targetBlock.classList.add('survey-active');
+            // // targetBlock.style.display = 'block';
+            
+            document.querySelectorAll('.selector-button').forEach(b => {
+                b.classList.remove('selector-active');
+            });
+            
+            btn.classList.add('selector-active');
+        });
+    });
+</script>

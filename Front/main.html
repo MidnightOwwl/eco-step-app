@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="css/main_styles.css">
+</head>
+<body>
+    <header class="container">
+        <span class="logo" href="#"><a href="#">EcoStep</a></span>
+        <nav class="menu">
+            <a class="active" href="#" id="home-link" style="display: none;">Home</a>
+            <a href="surveys.html" id="surveys-link" style="display: none;">Surveys</a>
+            <a href="data.html" id="data-link" style="display: none;">Data</a>
+            <a href="Registration.html" id="auth-link">Register</a>
+            <a href="profile.html" id="profile-link" style="display: none;">Profile</a>
+        </nav>
+    </header>
+    <div class="content container">
+        <div class="content--info">
+            <h1>Take a <b>step</b></h1>
+            <h1>towards ecology!</h1>
+        </div>
+        <div class="stats">
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+</body>
+</html>
+
+<script>
+        // Данные для блоков
+    const foodData = [
+        { preText: "You ate", value: "150", postText: "calories" },
+        { preText: "You drank", value: "2", postText: "liters of water" },
+        { preText: "You burned", value: "300", postText: "kcal" },
+        { preText: "You slept", value: "7", postText: "hours" }
+    ];
+
+    const container = document.getElementById('food-stats-container');
+
+    // Создаем блоки
+    foodData.forEach(item => {
+        const foodBlock = document.createElement('div');
+        foodBlock.className = 'food';
+
+        foodBlock.innerHTML = `
+            <p class="pre-value-text">${item.preText}</p>
+            <div class="stats-value">${item.value}</div>
+            <p class="post-value-text">${item.postText}</p>
+        `;
+
+        container.appendChild(foodBlock);
+    });
+</script>

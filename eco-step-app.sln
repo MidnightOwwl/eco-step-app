@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EcoStepBackend", "EcoStepBackend", "{3F6D4C09-1602-A8DF-DF94-837B014C8C1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcoStepBackend", "EcoStepBackend\EcoStepBackend\EcoStepBackend.csproj", "{4590E617-CC12-02F2-6F90-F94394439E4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4590E617-CC12-02F2-6F90-F94394439E4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4590E617-CC12-02F2-6F90-F94394439E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4590E617-CC12-02F2-6F90-F94394439E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4590E617-CC12-02F2-6F90-F94394439E4F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4590E617-CC12-02F2-6F90-F94394439E4F} = {3F6D4C09-1602-A8DF-DF94-837B014C8C1F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9AC900F-D69A-42E1-B107-0627571BE5CF}
+	EndGlobalSection
+EndGlobal
