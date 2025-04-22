@@ -4,7 +4,13 @@ public class FoodDataValidator : ISurveyDataValidator<FoodData>
 {
     public void Validate(User user, FoodData data, double days)
     {
-        user.IsFoodMeatOk = data.MeatEatenKg / days < FoodData.MeatEatenKgPerDay;
-        user.IsFoodPlantOk = data.PlantEatenKg / days < FoodData.PlantEatenKgPerDay;
+        var meatEatenKgDay = data.MeatEatenKg / days;
+        user.FoodMeatCondition = SurveyValidationHelper
+            .EvaluateCondition(meatEatenKgDay, FoodData.MeatEatenKgPerDay);
+
+        var plantEatenKgDay = data.PlantEatenKg / days;
+        user.FoodPlantCondition = SurveyValidationHelper
+            .EvaluateCondition(plantEatenKgDay, FoodData.PlantEatenKgPerDay);
     }
 }
+
