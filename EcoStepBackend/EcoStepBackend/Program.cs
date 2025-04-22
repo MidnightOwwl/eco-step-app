@@ -45,6 +45,8 @@ internal static class Program
     
     private static void BuildServices()
     {
+        _builder.Services.AddDbContext<AppDbContext>();
+
         // TODO: разобраться с AllowAnyHeader, AllowAnyMethod - небезопасно
         // TODO: понять, надо ли CORS нам вообще
         
