@@ -2,15 +2,15 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace EcoStepBackend.Auth;
+namespace EcoStepBackend.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class AuthController(AppDbContext db, IConfiguration config) : ControllerBase
 {
     private readonly PasswordHasher<User> _passwordHasher = new();
@@ -30,8 +30,8 @@ public class AuthController(AppDbContext db, IConfiguration config) : Controller
 
         db.Users.Add(user);
         await db.SaveChangesAsync();
-
-        return Ok();
+        
+        return Ok(new { UserId = user.Id });
     }
 
     [HttpPost("login")]
@@ -46,7 +46,7 @@ public class AuthController(AppDbContext db, IConfiguration config) : Controller
             return Unauthorized("Invalid credentials");
 
         var token = GenerateJwtToken(user);
-        return Ok(new { Token = token });
+        return Ok(new { Token = token, UserId = user.Id });
     }
     
     [Authorize]
