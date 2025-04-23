@@ -35,14 +35,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function registerUser(form) {
     form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const username = document.getElementById('login').value;
+            const username = document.getElementById('login').value.trim();
             const password = document.getElementById('password').value;
             try {
                 if (username && password) {
-                    // localStorage.setItem('username', username);
-                    sessionStorage.setItem('username', username);
-                    // localStorage.setItem('password', password);
                     await api.register(username, password);
+                    sessionStorage.setItem('username', username);
                     console.log('Registration successful');
                     await api.login(username, password);
                     console.log('Login successful');
@@ -60,13 +58,13 @@ function registerUser(form) {
 function loginUser(form) {
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const username = document.getElementById('login').value;
+        const username = document.getElementById('login').value.trim();
         const password = document.getElementById('password').value;
         
         try {
             if (username && password) {
-                sessionStorage.setItem('username', username);
                 await api.login(username, password);
+                sessionStorage.setItem('username', username);
                 console.log('Login successful');
                 window.location.href = 'profile.html';
             } else {

@@ -5,28 +5,30 @@ export class EcoStepApi {
     }
   
     async request(endpoint, method = 'GET', body = null, isStrs = false) {
-        const headers = {};
+        const headers = {
+            "Access-Control-Allow-Origin" : "*"
+        };
 
         if (!isStrs) {
             headers['Content-Type'] = 'application/json';
         }
-        
+
         if (this.token) {
             headers['Authorization'] = `Bearer ${this.token}`;
         }
     
         const response = await fetch(`${this.baseUrl}${endpoint}`, {
-            mode: "no-cors",
+            cahe: 'no-cache',
             method,
             headers,
-            body: body ? JSON.stringify(body) : null
+            body: isStrs ? body : JSON.stringify(body)
+            
         });
     
         if (!response.ok) {
-            const error = await response.json();
+            const error = await response.text();
             throw new Error(error.message || 'Request failed');
         }
-    
         return response.json();
     }
   
@@ -42,9 +44,11 @@ export class EcoStepApi {
         const formData = new FormData();
         formData.append('username', username);
         formData.append('password', password);
+
         const data = await this.request('/auth/login', 'POST', formData, true);
-        this.token = data.Token;
+        this.token = data.token;
         this.userId = data.userId;
+        console.log(this.token);
         localStorage.setItem('jwt_token', this.token);
         localStorage.setItem('userId', this.userId);
         return data;
