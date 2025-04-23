@@ -4,3 +4,5 @@
 eco-step-app.sln
 .vscode/*
 EcoStepBackend/EcoStepBackend/main.db*
+EcoStepBackend/EcoStepBackend/publish
+EcoStepBackend/EcoStepBackend/Logs
