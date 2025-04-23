@@ -3,12 +3,13 @@ using EcoStepBackend.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace EcoStepBackend;
 
 internal static class Program
 {
-    private static WebApplicationBuilder _builder;
+    private static WebApplicationBuilder _builder = null!;
     
     public static void Main(string[] args)
     {
@@ -45,6 +46,8 @@ internal static class Program
     
     private static void BuildServices()
     {
+        _builder.Services.AddDbContext<AppDbContext>();
+
         // TODO: разобраться с AllowAnyHeader, AllowAnyMethod - небезопасно
         // TODO: понять, надо ли CORS нам вообще
         
@@ -60,8 +63,40 @@ internal static class Program
         
         _builder.Services.AddControllers();
         _builder.Services.AddEndpointsApiExplorer();
-        _builder.Services.AddSwaggerGen();
+        BuildSwagger();
         BuildValidators();
+    }
+
+    private static void BuildSwagger()
+    {
+        _builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "EcoStep API", Version = "v1" });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        });
     }
 
     private static void BuildValidators()

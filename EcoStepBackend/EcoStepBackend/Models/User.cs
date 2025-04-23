@@ -3,39 +3,39 @@
 public class User
 {
     public int Id { get; set; } 
-    public string Name { get; set; } 
-    public string Email { get; set; } 
-    public string PasswordHash { get; set; } 
+    public required string Name { get; set; } 
+    public string? Email { get; set; } 
+    public required string PasswordHash { get; set; } 
     public Household? Household { get; set; } 
-    public ICollection<Survey> Surveys { get; set; }
+    public ICollection<Survey> Surveys { get; set; } = new List<Survey>();
     
-    public bool IsFoodMeatOk { get; set; }
-    public bool IsFoodPlantOk { get; set; }
-    public bool IsWaterOk { get; set; }
-    public bool IsElectricityOk { get; set; }
+    public Condition FoodMeatCondition { get; set; }
+    public Condition FoodPlantCondition { get; set; }
+    public Condition WaterCondition { get; set; }
+    public Condition ElectricityCondition { get; set; }
     
-    public bool IsCarPetrolOk { get; set; }
-    public bool IsCarDieselOk { get; set; }
-    public bool IsCarElectricOk { get; set; }
-    public bool IsCarHybridOk { get; set; }
-    public bool IsCarHydrogenOk { get; set; }
-    public bool IsCarMethaneOk { get; set; }
-    public bool IsCarPropaneOk { get; set; }
+    public Condition CarPetrolCondition { get; set; }
+    public Condition CarDieselCondition { get; set; }
+    public Condition CarElectricCondition { get; set; }
+    public Condition CarHybridCondition { get; set; }
+    public Condition CarHydrogenCondition { get; set; }
+    public Condition CarMethaneCondition { get; set; }
+    public Condition CarPropaneCondition { get; set; }
     
-    public bool IsPublicTransportOk { get; set; }
-    public bool IsTrainOk { get; set; }
-    public bool IsAirplaneOk { get; set; }
+    public Condition PublicTransportCondition { get; set; }
+    public Condition TrainCondition { get; set; }
+    public Condition AirplaneCondition { get; set; }
     
-    public bool IsFoodWasteOk { get; set; }
-    public bool IsOtherWasteOk { get; set; }
+    public Condition FoodWasteCondition { get; set; }
+    public Condition OtherWasteCondition { get; set; }
     
-    public bool IsPlasticWasteOk { get; set; }
-    public bool IsGlassWasteOk { get; set; }
-    public bool IsPaperWasteOk { get; set; }
-    public bool IsMetalWasteOk { get; set; }
+    public Condition PlasticWasteCondition { get; set; }
+    public Condition GlassWasteCondition { get; set; }
+    public Condition PaperWasteCondition { get; set; }
+    public Condition MetalWasteCondition { get; set; }
     
-    public bool IsPlasticRecycledOk { get; set; }
-    public bool IsGlassRecycledOk { get; set; }
-    public bool IsPaperRecycledOk { get; set; }
-    public bool IsMetalRecycledOk { get; set; }
+    public Condition PlasticRecycledCondition { get; set; }
+    public Condition GlassRecycledCondition { get; set; }
+    public Condition PaperRecycledCondition { get; set; }
+    public Condition MetalRecycledCondition { get; set; }
 }

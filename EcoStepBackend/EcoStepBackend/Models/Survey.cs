@@ -2,12 +2,12 @@
 
 public class Survey
 {
-    public long Id { get; set; }
-    public long UserId { get; set; }
+    public int Id { get; set; }
+    public int UserId { get; set; }
     public DateTime CompletedAt { get; set; }
-    public FoodData FoodData { get; set; }
-    public WasteData WasteData { get; set; }
-    public TransportData TransportData { get; set; }
-    public ResourceData ResourceData { get; set; }
-    public double ReportedDays { get; set; }
+    public required FoodData FoodData { get; set; } = new();
+    public required WasteData WasteData { get; set; } = new();
+    public required TransportData TransportData { get; set; } = new();
+    public required ResourceData ResourceData { get; set; } = new();
+    public double ReportedDays { get; set; } = new();
 }

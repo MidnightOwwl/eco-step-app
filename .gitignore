@@ -1,3 +1,6 @@
 ﻿.idea
 /EcoStepBackend/EcoStepBackend/bin
 /EcoStepBackend/EcoStepBackend/obj
+eco-step-app.sln
+.vscode/*
+EcoStepBackend/EcoStepBackend/main.db*
