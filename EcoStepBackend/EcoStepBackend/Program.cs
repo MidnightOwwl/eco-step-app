@@ -10,11 +10,11 @@ namespace EcoStepBackend;
 internal static class Program
 {
     private static WebApplicationBuilder _builder = null!;
-    
+
     public static void Main(string[] args)
     {
         _builder = WebApplication.CreateBuilder(args);
-        
+
         BuildAuth();
         BuildServices();
         RunApp();
@@ -43,14 +43,14 @@ internal static class Program
             };
         });
     }
-    
+
     private static void BuildServices()
     {
         _builder.Services.AddDbContext<AppDbContext>();
 
         // TODO: разобраться с AllowAnyHeader, AllowAnyMethod - небезопасно
         // TODO: понять, надо ли CORS нам вообще
-        
+
         _builder.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(policy =>
@@ -60,7 +60,7 @@ internal static class Program
                     .AllowAnyMethod();
             });
         });
-        
+
         _builder.Services.AddControllers();
         _builder.Services.AddEndpointsApiExplorer();
         BuildSwagger();
@@ -106,20 +106,20 @@ internal static class Program
         _builder.Services.AddScoped<ISurveyDataValidator<TransportData>, TransportDataValidator>();
         _builder.Services.AddScoped<ISurveyDataValidator<WasteData>, WasteDataValidator>();
     }
-    
+
     private static void RunApp()
     {
+        _builder.Services.AddSwaggerGen();
+        _builder.WebHost.ConfigureKestrel(options => { options.ListenAnyIP(5000); });
+
         var app = _builder.Build();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-        
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
         // TODO: разобраться с CORS
         app.UseCors();
-        
+
         app.MapGet("/", () => "Приложение запущено");
         app.UseAuthentication();
         app.UseAuthorization();
