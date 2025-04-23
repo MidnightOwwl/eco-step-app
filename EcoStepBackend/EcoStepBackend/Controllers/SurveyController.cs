@@ -11,7 +11,8 @@ public class SurveyController(
     ISurveyDataValidator<FoodData> foodValidator,
     ISurveyDataValidator<ResourceData> resourceValidator,
     ISurveyDataValidator<TransportData> transportValidator,
-    ISurveyDataValidator<WasteData> wasteValidator
+    ISurveyDataValidator<WasteData> wasteValidator,
+    ILogger<SurveyController> logger
 ) : ControllerBase
 {
     [HttpGet("{userId:long}")]
@@ -31,6 +32,7 @@ public class SurveyController(
         if (user is null)
             return NotFound();
 
+        logger.LogInformation("Method: GetAllSurveys | UserId: {UserId} | Time: {Time}", userId, DateTime.UtcNow);
         return Ok(user.Surveys);
     }
     
@@ -55,6 +57,7 @@ public class SurveyController(
             .OrderByDescending(s => s.CompletedAt)
             .Where(s => s.CompletedAt >= DateTime.UtcNow.AddDays(-7));
         
+        logger.LogInformation("Method: GetLastWeekSurveys | UserId: {UserId} | Time: {Time}", userId, DateTime.UtcNow);
         return Ok(lastSurvey);
     }
 
@@ -75,6 +78,7 @@ public class SurveyController(
         user.Surveys.Add(survey);
         db.SaveChanges();
 
+        logger.LogInformation("Method: CreateSurvey | UserId: {UserId} | Time: {Time}", survey.UserId, DateTime.UtcNow);
         return CreatedAtAction(nameof(GetAllSurveys), new { userId = survey.UserId }, survey);
     }
 

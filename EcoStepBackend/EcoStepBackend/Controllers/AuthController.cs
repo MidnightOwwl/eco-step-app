@@ -11,7 +11,7 @@ namespace EcoStepBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(AppDbContext db, IConfiguration config) : ControllerBase
+public class AuthController(AppDbContext db, IConfiguration config, ILogger<SurveyController> logger) : ControllerBase
 {
     private readonly PasswordHasher<User> _passwordHasher = new();
 
@@ -58,6 +58,7 @@ public class AuthController(AppDbContext db, IConfiguration config) : Controller
             .Include(u => u.Surveys)
             .FirstOrDefaultAsync(u => u.Id == id);
 
+        logger.LogInformation("Method: Profile | UserId: {UserId} | Time: {Time}", id, DateTime.UtcNow);
         return user == null ? NotFound() : Ok(user);
     }
 

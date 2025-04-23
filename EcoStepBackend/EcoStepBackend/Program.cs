@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace EcoStepBackend;
 
@@ -13,7 +14,14 @@ internal static class Program
 
     public static void Main(string[] args)
     {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+            .MinimumLevel.Information()
+            .WriteTo.File("Logs/survey_access.log", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
         _builder = WebApplication.CreateBuilder(args);
+        _builder.Host.UseSerilog();
 
         BuildAuth();
         BuildServices();
