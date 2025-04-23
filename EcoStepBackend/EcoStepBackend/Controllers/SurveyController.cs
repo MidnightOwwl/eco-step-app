@@ -1,4 +1,4 @@
-﻿using EcoStepBackend.Validators;
+﻿﻿using EcoStepBackend.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,17 +14,18 @@ public class SurveyController(
     ISurveyDataValidator<WasteData> wasteValidator
 ) : ControllerBase
 {
-    private readonly AppDbContext _db = db;
-    private readonly ISurveyDataValidator<FoodData> _foodValidator = foodValidator;
-    private readonly ISurveyDataValidator<ResourceData> _resourceValidator = resourceValidator;
-    private readonly ISurveyDataValidator<TransportData> _transportValidator = transportValidator;
-    private readonly ISurveyDataValidator<WasteData> _wasteValidator = wasteValidator;
-    
     [HttpGet("{userId:long}")]
     public IActionResult GetAllSurveys(long userId)
     {
-        var user = _db.Users
+        var user = db.Users
             .Include(u => u.Surveys)
+            .ThenInclude(s => s.FoodData)
+            .Include(u => u.Surveys)
+            .ThenInclude(s => s.ResourceData)
+            .Include(u => u.Surveys)
+            .ThenInclude(s => s.TransportData)
+            .Include(u => u.Surveys)
+            .ThenInclude(s => s.WasteData)
             .FirstOrDefault(u => u.Id == userId);
         
         if (user is null)
@@ -33,11 +34,18 @@ public class SurveyController(
         return Ok(user.Surveys);
     }
     
-    [HttpGet("{userId:long}/last-survey")]
-    public IActionResult GetLastSurvey(long userId)
+    [HttpGet("{userId:long}/last-week-surveys")]
+    public IActionResult GetLastWeekSurveys(long userId)
     {
-        var user = _db.Users
+        var user = db.Users
             .Include(u => u.Surveys)
+            .ThenInclude(s => s.FoodData)
+            .Include(u => u.Surveys)
+            .ThenInclude(s => s.ResourceData)
+            .Include(u => u.Surveys)
+            .ThenInclude(s => s.TransportData)
+            .Include(u => u.Surveys)
+            .ThenInclude(s => s.WasteData)
             .FirstOrDefault(u => u.Id == userId);
         
         if (user is null)
@@ -45,10 +53,7 @@ public class SurveyController(
 
         var lastSurvey = user.Surveys
             .OrderByDescending(s => s.CompletedAt)
-            .FirstOrDefault();
-        
-        if (lastSurvey is null)
-            return NotFound();
+            .Where(s => s.CompletedAt >= DateTime.UtcNow.AddDays(-7));
         
         return Ok(lastSurvey);
     }
@@ -59,7 +64,7 @@ public class SurveyController(
         survey.CompletedAt = DateTime.UtcNow;
         var userId = survey.UserId;
         
-        var user = _db.Users
+        var user = db.Users
             .Include(u => u.Surveys)
             .FirstOrDefault(u => u.Id == userId);
         
@@ -68,7 +73,7 @@ public class SurveyController(
         
         ValidateSurvey(user, survey);
         user.Surveys.Add(survey);
-        _db.SaveChanges();
+        db.SaveChanges();
 
         return CreatedAtAction(nameof(GetAllSurveys), new { userId = survey.UserId }, survey);
     }
@@ -77,9 +82,9 @@ public class SurveyController(
     {
         var days = survey.ReportedDays;
 
-        _foodValidator.Validate(user, survey.FoodData, days);
-        _resourceValidator.Validate(user, survey.ResourceData, days);
-        _transportValidator.Validate(user, survey.TransportData, days);
-        _wasteValidator.Validate(user, survey.WasteData, days);
+        foodValidator.Validate(user, survey.FoodData, days);
+        resourceValidator.Validate(user, survey.ResourceData, days);
+        transportValidator.Validate(user, survey.TransportData, days);
+        wasteValidator.Validate(user, survey.WasteData, days);
     }
 }

@@ -1,47 +1,69 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace EcoStepBackend.Auth;
+namespace EcoStepBackend.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class AuthController(IConfiguration config) : ControllerBase
+[Route("api/[controller]")]
+public class AuthController(AppDbContext db, IConfiguration config) : ControllerBase
 {
-    private static List<User> users = new()
-    {
-        new User { Id = 1, Name = "john", PasswordHash = "123" },
-        new User { Id = 2, Name = "jane", PasswordHash = "456" }
-    };
-
-    private readonly IConfiguration configField = config;
+    private readonly PasswordHasher<User> _passwordHasher = new();
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromForm] string username, [FromForm] string password)
     {
-        if (users.Any(u => u.Name == username))
+        var exists = await db.Users.AnyAsync(u => u.Name == username);
+        if (exists)
             return BadRequest("User already exists.");
-        var user = new User { Id = users.Count + 1, Name = username, PasswordHash = password };
-        users.Add(user);
-        return Ok();
+
+        var user = new User
+        {
+            Name = username,
+            PasswordHash = _passwordHasher.HashPassword(null!, password)
+        };
+
+        db.Users.Add(user);
+        await db.SaveChangesAsync();
+        
+        return Ok(new { UserId = user.Id });
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromForm] string username, [FromForm] string password)
     {
-        var user = users.FirstOrDefault(u => u.Name == username && u.PasswordHash == password);
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Name == username);
         if (user == null)
             return Unauthorized("Invalid credentials");
+
+        var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+        if (result == PasswordVerificationResult.Failed)
+            return Unauthorized("Invalid credentials");
+
         var token = GenerateJwtToken(user);
-        return Ok(new { Token = token });
+        return Ok(new { Token = token, UserId = user.Id });
+    }
+    
+    [Authorize]
+    [HttpGet("profile/{id:long}")]
+    public async Task<IActionResult> Profile(long id)
+    {
+        var user = await db.Users
+            .Include(u => u.Household)
+            .Include(u => u.Surveys)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        return user == null ? NotFound() : Ok(user);
     }
 
     private string GenerateJwtToken(User user)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configField["Jwt:Key"]!));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var claims = new[]
         {
@@ -49,21 +71,12 @@ public class AuthController(IConfiguration config) : ControllerBase
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         var token = new JwtSecurityToken(
-            issuer: configField["Jwt:Issuer"],
-            audience: configField["Jwt:Audience"],
+            issuer: config["Jwt:Issuer"],
+            audience: config["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddHours(1),
+            expires: DateTime.UtcNow.AddHours(1),
             signingCredentials: creds
         );
         return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    [Authorize]
-    [HttpGet("profile/{id}")]
-    public Task<IActionResult> Profile(int id)
-
-    {
-        var user = users.FirstOrDefault(u => u.Id == id);
-        return Task.FromResult<IActionResult>(user == null ? NotFound() : Ok(user));
     }
 }
