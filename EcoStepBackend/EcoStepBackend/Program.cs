@@ -3,6 +3,7 @@ using EcoStepBackend.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -122,13 +123,31 @@ internal static class Program
 
         app.UseSwagger();
         app.UseSwaggerUI();
-
         app.UseCors();
 
-        app.MapGet("/", () => "Приложение запущено");
+        RunFrontend(app);
+        
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
         app.Run();
+    }
+
+    private static void RunFrontend(WebApplication app)
+    {
+        var staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "Front");
+
+        app.UseDefaultFiles(new DefaultFilesOptions
+        {
+            FileProvider = new PhysicalFileProvider(staticFilesPath),
+            DefaultFileNames = new List<string> { "main.html" }
+        });
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(staticFilesPath),
+            RequestPath = ""
+        });
+
     }
 }
