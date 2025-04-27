@@ -1,10 +1,10 @@
-// Объекты для хранения графиков
+import { EcoStepApi } from './api.js';
+
 const charts = {
-    main: {},      // Основные гистограммы
-    history: {}    // Графики истории
+    main: {},
+    history: {}
 };
 
-// Цветовая палитра
 const COLORS = [
     'rgba(54, 162, 235, 0.7)',
     'rgba(255, 99, 132, 0.7)',
@@ -14,7 +14,6 @@ const COLORS = [
     'rgba(255, 206, 86, 0.7)'
 ];
 
-// Конфигурация графиков
 const CHART_CONFIG = {
     responsive: true,
     maintainAspectRatio: false,
@@ -25,14 +24,14 @@ const CHART_CONFIG = {
         },
         tooltip: {
             callbacks: {
-                label: ctx => `${ctx.dataset.label}: ${ctx.raw}`
+                label: ctx => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}`
             }
         }
     },
     scales: {
         y: { 
             beginAtZero: true,
-            title: { display: true, text: 'Value' }
+            title: { display: true, text: 'Value per day' }
         },
         x: { 
             grid: { display: false },
@@ -41,89 +40,234 @@ const CHART_CONFIG = {
     }
 };
 
-// Инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-    const surveyHistory = JSON.parse(localStorage.getItem('surveyHistory')) || {};
-    
-    if (Object.keys(surveyHistory).length === 0) {
-        document.getElementById('no-data').style.display = 'block';
+const api = new EcoStepApi();
+let currentCategory = 'food';
+let currentField = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+        showNoData();
         return;
     }
 
-    // Инициализация категорий
-    ['food', 'wastes', 'transport', 'costs'].forEach(category => {
-        if (surveyHistory[category]?.length > 0) {
-            initCategory(category, surveyHistory[category]);
+    try {
+        const surveys = await api.getSurveys(userId);
+        
+        if (!surveys || surveys.length === 0) {
+            showNoData();
+            return;
+        }
+
+        const surveyData = processSurveyData(surveys);
+        initCategories(surveyData);
+        setupTabSwitching();
+
+        // Инициализация первого поля для истории
+        const firstField = Object.keys(surveyData[currentCategory][0].data)
+            .filter(k => k !== 'days')[0];
+        updateHistoryChart(surveyData, currentCategory, firstField);
+
+    } catch (error) {
+        console.error('Error loading survey data:', error);
+        showNoData();
+    }
+});
+
+function showNoData() {
+    document.getElementById('no-data').style.display = 'block';
+    document.querySelectorAll('.chart-container').forEach(c => c.style.display = 'none');
+}
+
+function processSurveyData(surveys) {
+    const result = {
+        food: [],
+        wastes: [],
+        transport: [],
+        costs: []
+    };
+
+    surveys.forEach(survey => {
+        const date = new Date(survey.completedAt);
+        
+        if (survey.foodData) {
+            if (!isEmptyCategory(survey.foodData)) {
+                result.food.push({
+                    timestamp: date,
+                    data: {
+                        meatEatenKg: survey.foodData.meatEatenKg,
+                        plantEatenKg: survey.foodData.plantEatenKg,
+                        days: survey.reportedDays
+                    }
+                });
+            }
+        }
+        
+        if (survey.wasteData) {
+            if (!isEmptyCategory(survey.wasteData)) {
+                result.wastes.push({
+                    timestamp: date,
+                    data: {
+                        foodWasteKg: survey.wasteData.foodWasteKg,
+                        plasticWasteKg: survey.wasteData.plasticWasteKg,
+                        glassWasteKg: survey.wasteData.glassWasteKg,
+                        paperWasteKg: survey.wasteData.paperWasteKg,
+                        metalWasteKg: survey.wasteData.metalWasteKg,
+                        otherWasteKg: survey.wasteData.otherWasteKg,
+                        days: survey.reportedDays
+                    }
+                });
+            } 
+        }
+        
+        if (survey.transportData) {
+            if (!isEmptyCategory(survey.transportData)) {
+                result.transport.push({
+                    timestamp: date,
+                    data: {
+                        publicTransportDistanceKm: survey.transportData.publicTransportDistanceKm,
+                        airplaneDistanceKm: survey.transportData.airplaneDistanceKm,
+                        trainDistanceKm: survey.transportData.trainDistanceKm,
+                        carDistanceKmPetrol: survey.transportData.carDistanceKmPetrol,
+                        carDistanceKmDiesel: survey.transportData.carDistanceKmDiesel,
+                        carDistanceKmElectric: survey.transportData.carDistanceKmElectric,
+                        days: survey.reportedDays
+                    }
+                });
+            }
+            
+        }
+        
+        if (survey.resourceData) {
+            if (!isEmptyCategory(survey.resourceData)) {
+                result.costs.push({
+                    timestamp: date,
+                    data: {
+                        waterConsumptionL: survey.resourceData.waterConsumptionL,
+                        electricityConsumptionKWtH: survey.resourceData.electricityConsumptionKWtH,
+                        days: survey.reportedDays
+                    }
+                });
+            }
         }
     });
 
-    setupTabSwitching();
-});
-
-// Инициализация категории
-function initCategory(category, data) {
-    renderMainChart(category, data);
+    return result;
 }
 
-// Рендер основной гистограммы
+function isEmptyCategory(categoryData) {
+    let result = true;
+    for (const key in categoryData) {
+        if (key !== 'id' && key !== 'surveyId' && categoryData[key] !== 0)
+            result = false;
+    }
+
+    return result;
+}
+
+function initCategories(surveyData) {
+    Object.keys(surveyData).forEach(category => {
+        if (surveyData[category].length > 0) {
+            createSubcategoryButtons(surveyData, category);
+            renderMainChart(category, surveyData[category]);
+        }
+    });
+}
+
+function createSubcategoryButtons(surveyData, category) {
+    const container = document.getElementById(`${category}-chart`);
+    if (!container) return;
+
+    const buttonsDiv = document.createElement('div');
+    buttonsDiv.className = 'subcategory-buttons';
+    
+    Object.keys(surveyData[category][0].data)
+        .filter(key => key !== 'days')
+        .forEach((key, i) => {
+            const btn = document.createElement('button');
+            btn.className = `subcategory-btn ${i === 0 ? 'active' : ''}`;
+            btn.textContent = formatLabel(key);
+            btn.dataset.field = key;
+            btn.addEventListener('click', () => {
+                document.querySelectorAll(`#${category}-chart .subcategory-btn`).forEach(b => 
+                    b.classList.remove('active'));
+                btn.classList.add('active');
+                updateHistoryChart(surveyData, category, key);
+            });
+            buttonsDiv.appendChild(btn);
+        });
+
+    const title = container.querySelector('.chart-title');
+    title.insertAdjacentElement('afterend', buttonsDiv);
+}
+
 function renderMainChart(category, historyData) {
     const ctx = document.getElementById(`${category}Chart`);
     if (!ctx) return;
 
-    // Удаляем старый график
     if (charts.main[category]) charts.main[category].destroy();
 
-    const latestData = historyData[historyData.length - 1].data;
-    const { labels, values } = processChartData(latestData);
+    const latestData = historyData[historyData.length - 1];
+    const { labels, values } = processChartData(latestData.data);
+
+    // Обновляем заголовок с датой
+    const dateStr = latestData.timestamp.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+    document.querySelector(`#${category}-chart .chart-title`).textContent = 
+        `${formatLabel(category)} (${dateStr})`;
 
     charts.main[category] = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: `${formatLabel(category)} (Latest)`,
+                label: `Latest values per day`,
                 data: values,
                 backgroundColor: COLORS.slice(0, values.length),
                 borderColor: COLORS.map(c => c.replace('0.7', '1')).slice(0, values.length),
                 borderWidth: 1
             }]
         },
-        options: {
-            ...CHART_CONFIG,
-            onClick: (e, elements) => {
-                if (elements.length > 0) {
-                    const index = elements[0].index;
-                    const field = Object.keys(latestData).filter(k => k !== 'days')[index];
-                    renderHistoryChart(category, historyData, field);
-                }
-            }
-        }
+        options: CHART_CONFIG
     });
 }
 
-// Рендер графика истории
-function renderHistoryChart(category, historyData, field) {
+function updateHistoryChart(surveyData, category, field) {
+    currentCategory = category;
+    currentField = field;
+    renderHistoryChart(surveyData, category, field);
+}
+
+function renderHistoryChart(surveyData, category, field) {
+    if (!surveyData) return;
+
     const ctx = document.getElementById(`${category}HistoryChart`);
     if (!ctx) return;
 
-    // Удаляем старый график
     if (charts.history[category]) charts.history[category].destroy();
 
-    const labels = historyData.map(entry => 
-        new Date(entry.timestamp).toLocaleDateString('en-US', {
+    const labels = surveyData[category].map(surInfo => 
+        surInfo.timestamp.toLocaleDateString('en-US', {
             month: 'short',
             day: 'numeric'
         })
     );
-    
-    const values = historyData.map(entry => parseFloat(entry.data[field]) || 0);
+
+    const values = surveyData[category].map(surInfo => {
+        const value = surInfo.data[field];
+        const days = surInfo.data.days || 1;
+        return parseFloat(value) / days;
+    });
 
     charts.history[category] = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: `${formatLabel(field)} History`,
+                label: `${formatLabel(field)} per day`,
                 data: values,
                 borderColor: '#4CAF50',
                 backgroundColor: 'rgba(76, 175, 80, 0.1)',
@@ -137,7 +281,7 @@ function renderHistoryChart(category, historyData, field) {
             scales: {
                 y: { 
                     beginAtZero: true,
-                    title: { display: true, text: 'Value' }
+                    title: { display: true, text: 'Value per day' }
                 },
                 x: {
                     title: { display: true, text: 'Date' }
@@ -147,7 +291,24 @@ function renderHistoryChart(category, historyData, field) {
     });
 }
 
-// Обработка данных для графика
+function setupTabSwitching() {
+    document.querySelectorAll('.selector-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const target = this.dataset.target;
+            
+            document.querySelectorAll('.selector-button').forEach(btn => {
+                btn.classList.remove('selector-active');
+            });
+            this.classList.add('selector-active');
+            
+            document.querySelectorAll('.chart-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.getElementById(`${target}-chart`).classList.add('active');
+        });
+    });
+}
+
 function processChartData(data) {
     const labels = [];
     const values = [];
@@ -155,39 +316,18 @@ function processChartData(data) {
     Object.entries(data).forEach(([key, value]) => {
         if (key !== 'days') {
             labels.push(formatLabel(key));
-            values.push(parseFloat(value) || 0);
+            const normalizedValue = parseFloat(value) / (data.days || 1);
+            values.push(normalizedValue || 0);
         }
     });
     
     return { labels, values };
 }
 
-// Форматирование названий
 function formatLabel(key) {
     return key
+        .replace(/([A-Z])/g, ' $1')
         .replace(/_/g, ' ')
         .replace(/(^|\s)\S/g, l => l.toUpperCase())
-        .replace('Wates', 'Waste')
-        .replace('Non Recyclable', 'Non-Recyclable');
-}
-
-// Настройка переключения вкладок
-function setupTabSwitching() {
-    document.querySelectorAll('.selector-button').forEach(button => {
-        button.addEventListener('click', function() {
-            const target = this.dataset.target;
-            
-            // Обновляем активные кнопки
-            document.querySelectorAll('.selector-button').forEach(btn => {
-                btn.classList.remove('selector-active');
-            });
-            this.classList.add('selector-active');
-            
-            // Показываем соответствующий график
-            document.querySelectorAll('.chart-container').forEach(container => {
-                container.classList.remove('active');
-            });
-            document.getElementById(`${target}-chart`).classList.add('active');
-        });
-    });
+        .trim();
 }

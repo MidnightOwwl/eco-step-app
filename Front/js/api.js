@@ -4,26 +4,27 @@ export class EcoStepApi {
         this.token = localStorage.getItem('jwt_token');
     }
   
-    async request(endpoint, method = 'GET', body = null, isStrs = false) {
-        const headers = {
-            "Access-Control-Allow-Origin" : "*"
-        };
+    async request(endpoint, method = 'GET', body = null, isAuth = false) {
+        const headers = {}
 
-        if (!isStrs) {
+        if (!isAuth) {
             headers['Content-Type'] = 'application/json';
         }
 
         if (this.token) {
             headers['Authorization'] = `Bearer ${this.token}`;
         }
-    
-        const response = await fetch(`${this.baseUrl}${endpoint}`, {
+        const options = {
             cahe: 'no-cache',
             method,
-            headers,
-            body: isStrs ? body : JSON.stringify(body)
-            
-        });
+            headers
+        }
+
+        if (body) {
+            options['body'] = isAuth ? body : JSON.stringify(body)
+        }
+
+        const response = await fetch(`${this.baseUrl}${endpoint}`, options);
     
         if (!response.ok) {
             const error = await response.text();
@@ -31,8 +32,7 @@ export class EcoStepApi {
         }
         return response.json();
     }
-  
-    // Auth methods
+
     async register(username, password) {
         const formData = new FormData();
         formData.append('username', username);
@@ -53,26 +53,24 @@ export class EcoStepApi {
         localStorage.setItem('userId', this.userId);
         return data;
     }
-  
-    // Survey methods
+
     async getSurveys(userId) {
-        return this.request(`/api/survey/${userId}`);
+        return this.request(`/survey/${userId}`);
     }
 
     async getLastWeekSurveys(userId) {
-        return this.request(`/api/survey/${userId}/last-week-surveys`)
+        return this.request(`/survey/${userId}/last-week-surveys`)
     }
   
     async createSurvey(surveyData) {
-        return this.request('/api/survey', 'POST', surveyData);
+        return this.request('/survey', 'POST', surveyData);
     }
-  
-    // User methods
+
     async getUser(id) {
-        return this.request(`/api/user/${id}`);
+        return this.request(`/user/${id}`);
     }
   
     async updateHousehold(userId, householdData) {
-        return this.request(`/api/user/${userId}/household`, 'PUT', householdData);
+        return this.request(`/user/${userId}/household`, 'PUT', householdData);
     }
   }

@@ -6,88 +6,6 @@
     <title>Data</title>
     <link rel="stylesheet" href="css/main_styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .data-container {
-            max-width: 1000px;
-            margin-right: 80px;
-        }
-        
-        .chart-container {
-            width: 100%;
-            margin-bottom: 30px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            padding: 20px;
-            display: none;
-        }
-        
-        .chart-container.active {
-            display: block;
-        }
-        
-        .chart-wrapper {
-            position: relative;
-            width: 100%;
-            height: 300px;
-        }
-        
-        .chart-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-        
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-        
-        .selector-block {
-            margin-bottom: 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .chart-wrapper {
-                height: 250px;
-            }
-            
-            .chart-container {
-                padding: 15px;
-            }
-        }
-
-        .subcategory-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        .subcategory-btn {
-            padding: 8px 15px;
-            background: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .subcategory-btn.active {
-            background: #4CAF50;
-            color: white;
-            border-color: #4CAF50;
-        }
-        
-        .history-chart-container {
-            margin-top: 30px;
-            width: 100%;
-            height: 350px;
-        }
-    </style>
 </head>
 
 <body>
@@ -154,7 +72,7 @@
             </div>
         </div>
     </div>
-
-    <script src="js/data.js"></script>
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/data.js"></script>
 </body>
 </html>
