@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Kavivanar&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    --m-max-width: 1920px;
+    --m-light-green-col: #76AE0A;
+    --m-dark-green-col: #3c5709;
+    --m-text-color: #001205;
+    --m-salad-color: #D3DC82;
+}
+
+body {
+    background-color: white;
+    color: var(--m-text-color);
+}
+
+a {
+    text-decoration: none;
+    color: var(--m-text-color);
+}
+
+img {
+    max-width: 100%;
+}
+
+.back--arrow {
+    transition: transform 0.2s;
+}
+
+.back--arrow:hover {
+    transform: scale(105%);
+    transform: translateX(-3px);
+}
+
+.container {
+    max-width: var(--m-max-width);
+    width: 100%;
+    margin: 0 auto;
+}
+
+header {
+    font-family: 'Kavivanar';
+    padding: 40px 0;
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    margin-left: 60px;
+}
+
+header .logo {
+    margin-left: 50px;
+    font-size: 400%;
+}
+
+.content--wrap {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+}
+
+.content--wrap .auth{
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 200%;
+    font-style: normal;
+    margin: 0 auto;
+    font-size: 400%;
+}
+
+.content--wrap .auth--form {
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: height 1s ease;
+}
+
+.content--wrap .auth--form .form--element {
+    border-radius: 8px;
+    border-color: transparent;
+}
+
+.content--wrap .auth--form input {
+    width: 590px;
+    height: 82px;
+    background-color: var(--m-salad-color);
+    margin: 18px 0;
+    padding-left: 30px;
+    font-size: 150%;
+}
+
+input.error {
+    border-color: red;
+}
+
+#passwordError {
+    margin: 0 10px 10px 10px;
+    font-size: 125%;
+    color: red;
+}
+
+.content--wrap .auth--form input:focus {
+    border: none
+}
+ 
+.content--wrap .auth--form button {
+    width: 236px;
+    height: 70px;
+    background-color: var(--m-dark-green-col);
+    color: #EDEDDC;
+    font-size: 175%;
+    box-shadow: 0px 2px 8px 0px rgba(2, 34, 0, 0.5);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.content--wrap .auth--form button:hover {
+    background-color: #415f0a;
+}
+
+p {
+    font-size: 150%;
+    margin-bottom: 20px;
+}
+
+.str-link {
+    text-decoration: underline;
+    color: #76AE0A;
+}
+
+::selection {
+    color: yellowgreen;
+}

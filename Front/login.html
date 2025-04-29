@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="css/authorization.css">
+</head>
+<body>
+    <header class="container">
+        <a class="back--arrow"href="main.html"><img src="Arrow 2.svg" alt="To home page"></a>
+        <span class="logo"><a href="main.html">EcoStep</a></span>
+    </header>
+    <div class="content--wrap container">
+        <h1 class="auth">Login</h1>
+        <form class="auth--form" id="login-form">
+            <input class="form--element form--input" type="text" name="username" id="login" placeholder="Login" required>
+            <input class="form--element form--input" type="password" title="8 characters minimum" name="user_password" id="password" placeholder="Password" required>
+            <div id="passwordError" class="error-message"></div>
+            <p>Don't have an account yet? <a class="str-link" href="registration.html">Register</a></p>
+            <button class="form--element form--button" type="submit">Login</button>
+        </form>
+    </div>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/api.js"></script>
+    <script>
+        // Password length check
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const errorElement = document.getElementById('passwordError');
+            
+            if (password.length > 0 && password.length < 8) {
+                errorElement.textContent = 'Password must contain at least 8 characters';
+                this.classList.add('error');
+            } else {
+                errorElement.textContent = '';
+                this.classList.remove('error');
+            }
+        });
+    </script>
+</body>

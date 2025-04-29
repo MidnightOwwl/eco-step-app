@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Kavivanar&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    --m-max-width: 1920px;
+    --m-light-green-col: #76AE0A;
+    --m-dark-green-col: #3c5709;
+    --m-text-color: #001205;
+    --m-salad-color: #D3DC82;
+    --m-font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: white;
+    color: var(--m-text-color);
+    font-family: 'Inter', sans-serif;
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: var(--m-text-color);
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.topbar {
+    max-width: var(--m-max-width);
+    width: 100%;
+    font-family: 'Kavivanar', cursive;
+    font-size: 400%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 0;
+}
+.topbar--left-block {
+    margin-left: 60px;
+}
+
+.topbar--left-block .title {
+    margin-left: 30px;
+}
+
+.topbar .logo {
+    margin-right: 150px;
+}
+
+.container {
+    max-width: 1620px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.content-section {
+    font-family: 'Inter', sans-serif;
+    font-size: 300%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.nickname-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 300%;
+}
+
+.nickname-block {
+    width:100%;
+    max-height: 120px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.nickname-block .avatar {
+    width: 120px;
+    height: 120px;
+    background-color: #ebebeb;
+    border-radius: 9999px;
+}
+
+.nickname-block .nickname {
+    margin-left: 50px;
+}
+
+#logout-button {
+    max-width: 125px;
+    width: 100%;
+    height: 40px;
+    background-color: transparent;
+    border: darkred solid 3px;
+    font-size: 50%;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: color 0.2s, background-color 0.2s;
+
+}
+
+#logout-button:hover {
+    color: white;
+    background-color: darkred;
+}
+
+.selector-block {
+    max-width: 520px;
+    width: 100%;
+    display: flex;
+    margin-right: 5px;
+}
+
+.selector-block .categories {
+    list-style: none;
+}
+
+.selector-block .categories .category .category-block {
+    width: 520px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: 4px solid var(--m-dark-green-col);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.information-block {
+    max-width: 850px;
+    width: 100%;
+    height: 400px;
+    border: 4px solid var(--m-dark-green-col);
+    border-radius: 8px;
+    font-size: 75%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 5px;
+}
+
+.information-block .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-block {
+    align-items: center;
+    height: 50px;
+}
+
+input {
+    max-width: 120px;
+    width: 100%;
+    height: 100%;
+    border: 3px solid var(--m-dark-green-col);
+    border-radius: 8px;
+    font-size: 75%;
+    text-align: center;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+    display: none;
+    visibility: hidden;
+}
+
+select {
+    max-width: 125px;
+    width: 125px;
+    height: 55px;
+    border: 3px solid var(--m-dark-green-col);
+    border-radius: 8px;
+    font-size: 50%;
+    padding-left: 20px;
+}
+
+.save-button {
+    width: 200px;
+    height: 60px;
+    font-family: var(--m-font-family);
+    font-size: 150% !important;
+    float: right;
+    margin: 25px auto;
+    background-color: #304607;
+    color: #EDEDDC;
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px 0px rgba(2, 34, 0, 0.5);
+    font-size: 80%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.save-button:hover {
+    background-color: #3c5709;
+    transition: background-color 0.2s;
+}
+
+::selection {
+    background-color: yellowgreen;
+}

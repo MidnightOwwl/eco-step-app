@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="topbar--left-block">
+            <a class="back-arrow" href="main.html"><img src="Arrow 2.svg" alt="To home page"></a>
+            <span class="title">My profile</span>
+        </div>
+        <span class="logo"><a href="main.html">EcoStep</a></span>
+    </header>
+    <div class="nickname-section container">
+        <div class="nickname-block">
+            <div class="avatar"></div>
+            <div class="nickname" id="user-login"></div>
+        </div>
+        <button id="logout-button">Log out</button>
+    </div>
+    <div class="content-section container">
+        <div class="selector-block">
+            <ul class="categories">
+                <li class="category" id="place">
+                    <div class="active category-block">
+                        <div>My place</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="information-block">
+            <div class="info area">
+            <p class="area-label">House type</p>
+            <div class="edit-block">
+                <select id="houseType">
+                    <option value="0">Flat</option>
+                    <option value="1">Private house</option>
+                    <option value="2">Town House</option>
+                    <option value="3">Eco House</option>
+                    <option value="4">Mobile Home</option>
+                </select>
+            </div>
+            </div>
+            <div class="info tenants-number">
+                <p class="tenats-label">Number of residents:</p>
+                <div class="edit-block">
+                    <input type="number" id="tenants">
+                </div>
+            </div>
+            <div class="info heating">
+                <p class="heating-label">Heating type:</p>
+                <div class="edit-block">
+                    <select id="heating">
+                        <option value="0">Gas</option>
+                        <option value="1">Electricity</option>
+                        <option value="2">HeatPump</option>
+                        <option value="3">Wood</option>
+                        <option value="4">Coal</option>
+                        <option value="5">Solar</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <button id="saveButton" class="save-button">Save</button>
+    </div>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/profile.js"></script>
+</body>

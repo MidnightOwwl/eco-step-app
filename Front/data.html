@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>Data</title>
+    <link rel="stylesheet" href="css/main_styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header class="container">
+        <span class="logo" href="#"><a href="main.html">EcoStep</a></span>
+        <nav class="menu">    
+            <a href="main.html">Home</a>
+            <a href="surveys.html">Surveys</a>
+            <a class="active" href="#">Data</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+
+    <div class="main-section container">
+        <div class="selector-block">
+            <button class="selector-button selector-active" data-target="food">Food</button>
+            <button class="selector-button" data-target="wastes">Wastes</button>
+            <button class="selector-button" data-target="transport">Transport</button>
+            <button class="selector-button" data-target="costs">Costs</button>
+        </div>
+        
+        <div class="data-container">
+            <div id="food-chart" class="chart-container active">
+                <h3 class="chart-title">Food Consumption</h3>
+                <div class="chart-wrapper">
+                    <canvas id="foodChart"></canvas>
+                </div>
+                <div class="history-chart-container">
+                    <canvas id="foodHistoryChart"></canvas>
+                </div>
+            </div>
+            
+            <div id="wastes-chart" class="chart-container">
+                <h3 class="chart-title">Waste Production</h3>
+                <div class="chart-wrapper">
+                    <canvas id="wastesChart"></canvas>
+                </div><div class="history-chart-container">
+                    <canvas id="wastesHistoryChart"></canvas>
+                </div>
+            </div>
+            
+            <div id="transport-chart" class="chart-container">
+                <h3 class="chart-title">Transport Usage</h3>
+                <div class="chart-wrapper">
+                    <canvas id="transportChart"></canvas>
+                </div>
+                <div class="history-chart-container">
+                    <canvas id="transportHistoryChart"></canvas>
+                </div>
+            </div>
+            
+            <div id="costs-chart" class="chart-container">
+                <h3 class="chart-title">Resource Costs</h3>
+                <div class="chart-wrapper">
+                    <canvas id="costsChart"></canvas>
+                </div>
+                <div class="history-chart-container">
+                    <canvas id="costsHistoryChart"></canvas>
+                </div>
+            </div>
+            
+            <div id="no-data" class="no-data" style="display: none;">
+                No survey data available. Please complete surveys first.
+            </div>
+        </div>
+    </div>
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/data.js"></script>
+</body>
+</html>
