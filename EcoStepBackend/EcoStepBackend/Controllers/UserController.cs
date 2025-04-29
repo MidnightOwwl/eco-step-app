@@ -32,12 +32,17 @@ public class UserController(AppDbContext db, ILogger<SurveyController> logger) :
             return NotFound();
 
         if (user.Household is null)
+        {
             user.Household = updated;
+        }
         else
+        {
+            updated.Id = user.Household.Id;
             db.Entry(user.Household).CurrentValues.SetValues(updated);
+        }
 
         db.SaveChanges();
 
-        return Ok(user.Household);
+        return Ok(user.Household ?? updated);
     }
 }
