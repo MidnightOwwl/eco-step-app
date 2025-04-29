@@ -5,7 +5,7 @@ namespace EcoStepBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController(AppDbContext db) : ControllerBase
+public class UserController(AppDbContext db, ILogger<SurveyController> logger) : ControllerBase
 {
     [HttpGet("{id:long}")]
     public IActionResult GetUser(long id)
@@ -17,6 +17,7 @@ public class UserController(AppDbContext db) : ControllerBase
         if (user is null)
             return NotFound();
 
+        logger.LogInformation("Method: GetUser | UserId: {UserId} | Time: {Time}", id, DateTime.UtcNow);
         return Ok(user);
     }
 
@@ -31,12 +32,17 @@ public class UserController(AppDbContext db) : ControllerBase
             return NotFound();
 
         if (user.Household is null)
+        {
             user.Household = updated;
+        }
         else
+        {
+            updated.Id = user.Household.Id;
             db.Entry(user.Household).CurrentValues.SetValues(updated);
+        }
 
         db.SaveChanges();
 
-        return Ok(user.Household);
+        return Ok(user.Household ?? updated);
     }
 }

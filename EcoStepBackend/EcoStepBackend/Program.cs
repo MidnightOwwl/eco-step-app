@@ -3,18 +3,27 @@ using EcoStepBackend.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace EcoStepBackend;
 
 internal static class Program
 {
     private static WebApplicationBuilder _builder = null!;
-    
+
     public static void Main(string[] args)
     {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+            .MinimumLevel.Information()
+            .WriteTo.File("Logs/survey_access.log", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
         _builder = WebApplication.CreateBuilder(args);
-        
+        _builder.Host.UseSerilog();
+
         BuildAuth();
         BuildServices();
         RunApp();
@@ -43,24 +52,22 @@ internal static class Program
             };
         });
     }
-    
+
     private static void BuildServices()
     {
         _builder.Services.AddDbContext<AppDbContext>();
-
-        // TODO: разобраться с AllowAnyHeader, AllowAnyMethod - небезопасно
-        // TODO: понять, надо ли CORS нам вообще
         
+        // TODO: Убрать AllowAnyOrigin
         _builder.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(policy =>
             {
-                policy.WithOrigins("http://localhost:3000")
+                policy.AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });
         });
-        
+
         _builder.Services.AddControllers();
         _builder.Services.AddEndpointsApiExplorer();
         BuildSwagger();
@@ -106,24 +113,41 @@ internal static class Program
         _builder.Services.AddScoped<ISurveyDataValidator<TransportData>, TransportDataValidator>();
         _builder.Services.AddScoped<ISurveyDataValidator<WasteData>, WasteDataValidator>();
     }
-    
+
     private static void RunApp()
     {
+        _builder.Services.AddSwaggerGen();
+        _builder.WebHost.ConfigureKestrel(options => { options.ListenAnyIP(5000); });
+
         var app = _builder.Build();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-        
-        // TODO: разобраться с CORS
+        app.UseSwagger();
+        app.UseSwaggerUI();
         app.UseCors();
+
+        RunFrontend(app);
         
-        app.MapGet("/", () => "Приложение запущено");
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
         app.Run();
+    }
+
+    private static void RunFrontend(WebApplication app)
+    {
+        var staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "Front");
+
+        app.UseDefaultFiles(new DefaultFilesOptions
+        {
+            FileProvider = new PhysicalFileProvider(staticFilesPath),
+            DefaultFileNames = new List<string> { "main.html" }
+        });
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(staticFilesPath),
+            RequestPath = ""
+        });
+
     }
 }
