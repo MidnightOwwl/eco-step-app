@@ -96,6 +96,16 @@ header .logo {
     font-size: 150%;
 }
 
+input.error {
+    border-color: red;
+}
+
+#passwordError {
+    margin: 0 10px 10px 10px;
+    font-size: 125%;
+    color: red;
+}
+
 .content--wrap .auth--form input:focus {
     border: none
 }

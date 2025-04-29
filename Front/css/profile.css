@@ -12,6 +12,7 @@ body {
     --m-dark-green-col: #3c5709;
     --m-text-color: #001205;
     --m-salad-color: #D3DC82;
+    --m-font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -156,7 +157,6 @@ img {
 }
 
 .edit-block {
-    
     align-items: center;
     height: 50px;
 }
@@ -186,8 +186,25 @@ select {
     padding-left: 20px;
 }
 
-.edit {
+.save-button {
+    width: 200px;
+    height: 60px;
+    font-family: var(--m-font-family);
+    font-size: 150% !important;
+    float: right;
+    margin: 25px auto;
+    background-color: #304607;
+    color: #EDEDDC;
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px 0px rgba(2, 34, 0, 0.5);
+    font-size: 80%;
     cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.save-button:hover {
+    background-color: #3c5709;
+    transition: background-color 0.2s;
 }
 
 ::selection {

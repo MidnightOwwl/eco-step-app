@@ -23,7 +23,6 @@ function initForms() {
                     collectFormData(this)
                 );
 
-                console.log(JSON.stringify(formData));
                 const response = await api.createSurvey(formData);
                 console.log('Survey submitted:', response);
 
@@ -51,8 +50,6 @@ function collectFormData(form) {
 
 // Преобразование данных формы в формат API
 function mapFormDataToApiFormat(formId, formData) {
-    const surveyId = parseInt(localStorage.getItem('surveyId'));
-    localStorage.setItem('surveyId', surveyId + 1);
     const userId = localStorage.getItem('userId');
     const surveyData = {
         userId: parseInt(userId),
@@ -152,7 +149,3 @@ function initTabSwitching() {
         });
     });
 }
-
-// function getSurvayId() {
-    
-// }

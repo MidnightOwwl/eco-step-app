@@ -34,35 +34,40 @@
         </div>
         <div class="information-block">
             <div class="info area">
-            <p class="area-label">Area, m^2:</p>
+            <p class="area-label">House type</p>
             <div class="edit-block">
-                <input type="number" id="area" readonly>
-                <img class="edit" id="edit_area" src="Pencil.svg" alt="Edit">
+                <select id="houseType">
+                    <option value="0">Flat</option>
+                    <option value="1">Private house</option>
+                    <option value="2">Town House</option>
+                    <option value="3">Eco House</option>
+                    <option value="4">Mobile Home</option>
+                </select>
             </div>
             </div>
             <div class="info tenants-number">
                 <p class="tenats-label">Number of residents:</p>
                 <div class="edit-block">
-                    <input type="number" id="tenants" readonly>
-                    <img class="edit" id="edit_tenants" src="Pencil.svg" alt="Edit">
+                    <input type="number" id="tenants">
                 </div>
             </div>
             <div class="info heating">
                 <p class="heating-label">Heating type:</p>
                 <div class="edit-block">
-                    <select id="heating" disabled>
-                        <option value="">Choose</option>
-                        <option value="Gas">Gas</option>
-                        <option value="Electricity">Electricity</option>
-                        <option value="HeatPump">HeatPump</option>
-                        <option value="Wood">Wood</option>
-                        <option value="Coal">Coal</option>
-                        <option value="Solar">Solar</option>
+                    <select id="heating">
+                        <option value="0">Gas</option>
+                        <option value="1">Electricity</option>
+                        <option value="2">HeatPump</option>
+                        <option value="3">Wood</option>
+                        <option value="4">Coal</option>
+                        <option value="5">Solar</option>
                     </select>
-                    <img class="edit" id="edit_heating" src="Pencil.svg" alt="Edit">
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
+        <button id="saveButton" class="save-button">Save</button>
     </div>
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/api.js"></script>
