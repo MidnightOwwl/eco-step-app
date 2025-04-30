@@ -5,28 +5,34 @@ public class WasteDataValidator : ISurveyDataValidator<WasteData>
     public void Validate(User user, WasteData data, double days)
     {
         var foodWasteOzDay = data.FoodWasteOz / days;
-        user.FoodWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(foodWasteOzDay, WasteData.FoodWasteMaxOzDay);
+        if (foodWasteOzDay > 0)
+            user.FoodWasteCondition = SurveyValidationHelper
+                .EvaluateCondition(foodWasteOzDay, WasteData.FoodWasteMaxOzDay);
         
         var otherWasteOzDay = data.OtherWasteOz / days;
-        user.OtherWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(otherWasteOzDay, WasteData.OtherWasteMaxOzDay);
+        if (otherWasteOzDay > 0)
+            user.OtherWasteCondition = SurveyValidationHelper
+                .EvaluateCondition(otherWasteOzDay, WasteData.OtherWasteMaxOzDay);
         
         var plasticWasteOzDay = data.PlasticWasteOz / days;
-        user.PlasticWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(plasticWasteOzDay, WasteData.PlasticWasteMaxOzDay);
+        if (plasticWasteOzDay > 0)
+            user.PlasticWasteCondition = SurveyValidationHelper
+                .EvaluateCondition(plasticWasteOzDay, WasteData.PlasticWasteMaxOzDay);
         
         var glassWasteOzDay = data.GlassWasteOz / days;
-        user.GlassWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(glassWasteOzDay, WasteData.GlassWasteMaxOzDay);
+        if (glassWasteOzDay > 0)
+            user.GlassWasteCondition = SurveyValidationHelper
+                .EvaluateCondition(glassWasteOzDay, WasteData.GlassWasteMaxOzDay);
         
         var paperWasteOzDay = data.PaperWasteOz / days;
-        user.PaperWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(paperWasteOzDay, WasteData.PaperWasteMaxOzDay);
+        if (paperWasteOzDay > 0)
+            user.PaperWasteCondition = SurveyValidationHelper
+                .EvaluateCondition(paperWasteOzDay, WasteData.PaperWasteMaxOzDay);
         
         var metalWasteOzDay = data.MetalWasteOz / days;
-        user.MetalWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(metalWasteOzDay, WasteData.MetalWasteMaxOzDay);
+        if (metalWasteOzDay > 0)
+            user.MetalWasteCondition = SurveyValidationHelper
+                .EvaluateCondition(metalWasteOzDay, WasteData.MetalWasteMaxOzDay);
 
         ValidateRecycledWaste(user, data, days);
     }

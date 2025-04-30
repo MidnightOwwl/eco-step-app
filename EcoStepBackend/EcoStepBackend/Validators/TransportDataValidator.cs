@@ -5,32 +5,39 @@ public class TransportDataValidator : ISurveyDataValidator<TransportData>
     public void Validate(User user, TransportData data, double days)
     {
         var carPetrolMilesDay = data.CarDistanceMilesPetrol / days;
-        user.CarPetrolCondition = SurveyValidationHelper
-            .EvaluateCondition(carPetrolMilesDay, TransportData.CarDistancePetrolMaxMilesDay);
+        if (carPetrolMilesDay > 0)
+            user.CarPetrolCondition = SurveyValidationHelper
+                .EvaluateCondition(carPetrolMilesDay, TransportData.CarDistancePetrolMaxMilesDay);
         
         var carDieselMilesDay = data.CarDistanceMilesDiesel / days;
-        user.CarDieselCondition = SurveyValidationHelper
-            .EvaluateCondition(carDieselMilesDay, TransportData.CarDistanceDieselMaxMilesDay);
+        if (carDieselMilesDay > 0)
+            user.CarDieselCondition = SurveyValidationHelper
+                .EvaluateCondition(carDieselMilesDay, TransportData.CarDistanceDieselMaxMilesDay);
         
         var carElectricMilesDay = data.CarDistanceMilesElectric / days;
-        user.CarElectricCondition = SurveyValidationHelper
-            .EvaluateCondition(carElectricMilesDay, TransportData.CarDistanceElectricMaxMilesDay);
+        if (carElectricMilesDay > 0)
+            user.CarElectricCondition = SurveyValidationHelper
+                .EvaluateCondition(carElectricMilesDay, TransportData.CarDistanceElectricMaxMilesDay);
         
         var carHybridMilesDay = data.CarDistanceMilesHybrid / days;
-        user.CarHybridCondition = SurveyValidationHelper
-            .EvaluateCondition(carHybridMilesDay, TransportData.CarDistanceHybridMaxMilesDay);
+        if (carHybridMilesDay > 0)
+            user.CarHybridCondition = SurveyValidationHelper
+                .EvaluateCondition(carHybridMilesDay, TransportData.CarDistanceHybridMaxMilesDay);
         
         var carHydrogenMilesDay = data.CarDistanceMilesHydrogen / days;
-        user.CarHydrogenCondition = SurveyValidationHelper
-            .EvaluateCondition(carHydrogenMilesDay, TransportData.CarDistanceHydrogenMaxMilesDay);
+        if (carHydrogenMilesDay > 0)
+            user.CarHydrogenCondition = SurveyValidationHelper
+                .EvaluateCondition(carHydrogenMilesDay, TransportData.CarDistanceHydrogenMaxMilesDay);
         
         var carMethaneMilesDay = data.CarDistanceMilesMethane / days;
-        user.CarMethaneCondition = SurveyValidationHelper
-            .EvaluateCondition(carMethaneMilesDay, TransportData.CarDistanceMethaneMaxMilesDay);
+        if (carMethaneMilesDay > 0)
+            user.CarMethaneCondition = SurveyValidationHelper
+                .EvaluateCondition(carMethaneMilesDay, TransportData.CarDistanceMethaneMaxMilesDay);
         
         var carPropaneMilesDay = data.CarDistanceMilesPropane / days;
-        user.CarPropaneCondition = SurveyValidationHelper
-            .EvaluateCondition(carPropaneMilesDay, TransportData.CarDistancePropaneMaxMilesDay);
+        if (carPropaneMilesDay > 0)
+            user.CarPropaneCondition = SurveyValidationHelper
+                .EvaluateCondition(carPropaneMilesDay, TransportData.CarDistancePropaneMaxMilesDay);
         
         ValidatePublicTransport(user, data, days);
     }
@@ -38,15 +45,18 @@ public class TransportDataValidator : ISurveyDataValidator<TransportData>
     private static void ValidatePublicTransport(User user, TransportData data, double days)
     {
         var publicTransportMilesDay = data.PublicTransportDistanceMiles / days;
-        user.PublicTransportCondition = SurveyValidationHelper
-            .EvaluateCondition(publicTransportMilesDay, TransportData.PublicTransportDistanceMaxMilesDay);
+        if (publicTransportMilesDay > 0)
+            user.PublicTransportCondition = SurveyValidationHelper
+                .EvaluateCondition(publicTransportMilesDay, TransportData.PublicTransportDistanceMaxMilesDay);
         
         var trainMilesDay = data.TrainDistanceMiles / days;
-        user.TrainCondition = SurveyValidationHelper
-            .EvaluateCondition(trainMilesDay, TransportData.TrainDistanceMaxMilesDay);
+        if (trainMilesDay > 0)
+            user.TrainCondition = SurveyValidationHelper
+                .EvaluateCondition(trainMilesDay, TransportData.TrainDistanceMaxMilesDay);
 
         var airplaneMilesDay = data.AirplaneDistanceMiles / days;
-        user.AirplaneCondition = SurveyValidationHelper
-            .EvaluateCondition(airplaneMilesDay, TransportData.AirplaneDistanceMaxMilesDay);
+        if (airplaneMilesDay > 0)
+            user.AirplaneCondition = SurveyValidationHelper
+                .EvaluateCondition(airplaneMilesDay, TransportData.AirplaneDistanceMaxMilesDay);
     }
 }
