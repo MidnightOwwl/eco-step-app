@@ -6,11 +6,11 @@ public class ResourceDataValidator : ISurveyDataValidator<ResourceData>
     {
         var waterConsumptionDay = data.WaterConsumptionL / days;
         user.WaterCondition = SurveyValidationHelper
-            .EvaluateCondition(waterConsumptionDay, ResourceData.WaterConsumptionLPerDay);
+            .EvaluateCondition(waterConsumptionDay, ResourceData.WaterConsumptionMaxLDay);
 
         var electricityConsumptionDay = data.ElectricityConsumptionKWtH / days;
         user.ElectricityCondition = SurveyValidationHelper
-            .EvaluateCondition(electricityConsumptionDay, ResourceData.ElectricityConsumptionKWtHPerDay);
+            .EvaluateCondition(electricityConsumptionDay, ResourceData.ElectricityConsumptionMaxKWtHDay);
     }
 }
 

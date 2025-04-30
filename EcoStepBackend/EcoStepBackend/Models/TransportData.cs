@@ -5,26 +5,26 @@ public class TransportData
     public int Id { get; set; } 
     
     public int SurveyId { get; set; }
-    public double PublicTransportDistanceKm { get; set; }
-    public double AirplaneDistanceKm { get; set; }
-    public double TrainDistanceKm { get; set; }
+    public double PublicTransportDistanceMiles { get; set; }
+    public double AirplaneDistanceMiles { get; set; }
+    public double TrainDistanceMiles { get; set; }
     
-    public double CarDistanceKmPetrol { get; set; }
-    public double CarDistanceKmDiesel { get; set; }
-    public double CarDistanceKmElectric { get; set; }
-    public double CarDistanceKmHybrid { get; set; }
-    public double CarDistanceKmHydrogen { get; set; }
-    public double CarDistanceKmMethane { get; set; }
-    public double CarDistanceKmPropane { get; set; }
+    public double CarDistanceMilesPetrol { get; set; }
+    public double CarDistanceMilesDiesel { get; set; }
+    public double CarDistanceMilesElectric { get; set; }
+    public double CarDistanceMilesHybrid { get; set; }
+    public double CarDistanceMilesHydrogen { get; set; }
+    public double CarDistanceMilesMethane { get; set; }
+    public double CarDistanceMilesPropane { get; set; }
     
-    public const double CarDistanceKmPetrolPerDay = 28;
-    public const double CarDistanceKmDieselPerDay = 32;
-    public const double CarDistanceKmElectricPerDay = 109;
-    public const double CarDistanceKmHybridPerDay = 54;
-    public const double CarDistanceKmHydrogenPerDay = 109;
-    public const double CarDistanceKmMethanePerDay = 42;
-    public const double CarDistanceKmPropanePerDay = 42;
-    public const double PublicTransportDistanceKmPerDay = 52;
-    public const double AirplaneDistanceKmPerDay = 28;
-    public const double TrainDistanceKmPerDay = 133;
+    public const double CarDistancePetrolMaxMilesDay = 17.4;
+    public const double CarDistanceDieselMaxMilesDay = 19.9;
+    public const double CarDistanceElectricMaxMilesDay = 67.7;
+    public const double CarDistanceHybridMaxMilesDay = 33.6;
+    public const double CarDistanceHydrogenMaxMilesDay = 67.7;
+    public const double CarDistanceMethaneMaxMilesDay = 26.1;
+    public const double CarDistancePropaneMaxMilesDay = 26.1;
+    public const double PublicTransportDistanceMaxMilesDay = 32.3;
+    public const double AirplaneDistanceMaxMilesDay = 17.4;
+    public const double TrainDistanceMaxMilesDay = 82.6;
 }

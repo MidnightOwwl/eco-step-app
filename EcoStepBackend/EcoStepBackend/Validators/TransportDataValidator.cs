@@ -4,49 +4,49 @@ public class TransportDataValidator : ISurveyDataValidator<TransportData>
 {
     public void Validate(User user, TransportData data, double days)
     {
-        var carPetrolKmDay = data.CarDistanceKmPetrol / days;
+        var carPetrolMilesDay = data.CarDistanceMilesPetrol / days;
         user.CarPetrolCondition = SurveyValidationHelper
-            .EvaluateCondition(carPetrolKmDay, TransportData.CarDistanceKmPetrolPerDay);
+            .EvaluateCondition(carPetrolMilesDay, TransportData.CarDistancePetrolMaxMilesDay);
         
-        var carDieselKmDay = data.CarDistanceKmDiesel / days;
+        var carDieselMilesDay = data.CarDistanceMilesDiesel / days;
         user.CarDieselCondition = SurveyValidationHelper
-            .EvaluateCondition(carDieselKmDay, TransportData.CarDistanceKmDieselPerDay);
+            .EvaluateCondition(carDieselMilesDay, TransportData.CarDistanceDieselMaxMilesDay);
         
-        var carElectricKmDay = data.CarDistanceKmElectric / days;
+        var carElectricMilesDay = data.CarDistanceMilesElectric / days;
         user.CarElectricCondition = SurveyValidationHelper
-            .EvaluateCondition(carElectricKmDay, TransportData.CarDistanceKmElectricPerDay);
+            .EvaluateCondition(carElectricMilesDay, TransportData.CarDistanceElectricMaxMilesDay);
         
-        var carHybridKmDay = data.CarDistanceKmHybrid / days;
+        var carHybridMilesDay = data.CarDistanceMilesHybrid / days;
         user.CarHybridCondition = SurveyValidationHelper
-            .EvaluateCondition(carHybridKmDay, TransportData.CarDistanceKmHybridPerDay);
+            .EvaluateCondition(carHybridMilesDay, TransportData.CarDistanceHybridMaxMilesDay);
         
-        var carHydrogenKmDay = data.CarDistanceKmHydrogen / days;
+        var carHydrogenMilesDay = data.CarDistanceMilesHydrogen / days;
         user.CarHydrogenCondition = SurveyValidationHelper
-            .EvaluateCondition(carHydrogenKmDay, TransportData.CarDistanceKmHydrogenPerDay);
+            .EvaluateCondition(carHydrogenMilesDay, TransportData.CarDistanceHydrogenMaxMilesDay);
         
-        var carMethaneKmDay = data.CarDistanceKmMethane / days;
+        var carMethaneMilesDay = data.CarDistanceMilesMethane / days;
         user.CarMethaneCondition = SurveyValidationHelper
-            .EvaluateCondition(carMethaneKmDay, TransportData.CarDistanceKmMethanePerDay);
+            .EvaluateCondition(carMethaneMilesDay, TransportData.CarDistanceMethaneMaxMilesDay);
         
-        var carPropaneKmDay = data.CarDistanceKmPropane / days;
+        var carPropaneMilesDay = data.CarDistanceMilesPropane / days;
         user.CarPropaneCondition = SurveyValidationHelper
-            .EvaluateCondition(carPropaneKmDay, TransportData.CarDistanceKmPropanePerDay);
+            .EvaluateCondition(carPropaneMilesDay, TransportData.CarDistancePropaneMaxMilesDay);
         
         ValidatePublicTransport(user, data, days);
     }
     
     private static void ValidatePublicTransport(User user, TransportData data, double days)
     {
-        var publicTransportKmDay = data.PublicTransportDistanceKm / days;
+        var publicTransportMilesDay = data.PublicTransportDistanceMiles / days;
         user.PublicTransportCondition = SurveyValidationHelper
-            .EvaluateCondition(publicTransportKmDay, TransportData.PublicTransportDistanceKmPerDay);
+            .EvaluateCondition(publicTransportMilesDay, TransportData.PublicTransportDistanceMaxMilesDay);
         
-        var trainKmDay = data.TrainDistanceKm / days;
+        var trainMilesDay = data.TrainDistanceMiles / days;
         user.TrainCondition = SurveyValidationHelper
-            .EvaluateCondition(trainKmDay, TransportData.TrainDistanceKmPerDay);
+            .EvaluateCondition(trainMilesDay, TransportData.TrainDistanceMaxMilesDay);
 
-        var airplaneKmDay = data.AirplaneDistanceKm / days;
+        var airplaneMilesDay = data.AirplaneDistanceMiles / days;
         user.AirplaneCondition = SurveyValidationHelper
-            .EvaluateCondition(airplaneKmDay, TransportData.AirplaneDistanceKmPerDay);
+            .EvaluateCondition(airplaneMilesDay, TransportData.AirplaneDistanceMaxMilesDay);
     }
 }

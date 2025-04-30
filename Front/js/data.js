@@ -95,8 +95,8 @@ function processSurveyData(surveys) {
                 result.food.push({
                     timestamp: date,
                     data: {
-                        meatEatenKg: survey.foodData.meatEatenKg,
-                        plantEatenKg: survey.foodData.plantEatenKg,
+                        meatEatenOz: survey.foodData.meatEatenOz,
+                        plantEatenOz: survey.foodData.plantEatenOz,
                         days: survey.reportedDays
                     }
                 });
@@ -108,12 +108,12 @@ function processSurveyData(surveys) {
                 result.wastes.push({
                     timestamp: date,
                     data: {
-                        foodWasteKg: survey.wasteData.foodWasteKg,
-                        plasticWasteKg: survey.wasteData.plasticWasteKg,
-                        glassWasteKg: survey.wasteData.glassWasteKg,
-                        paperWasteKg: survey.wasteData.paperWasteKg,
-                        metalWasteKg: survey.wasteData.metalWasteKg,
-                        otherWasteKg: survey.wasteData.otherWasteKg,
+                        foodWasteOz: survey.wasteData.foodWasteOz,
+                        plasticWasteOz: survey.wasteData.plasticWasteOz,
+                        glassWasteOz: survey.wasteData.glassWasteOz,
+                        paperWasteOz: survey.wasteData.paperWasteOz,
+                        metalWasteOz: survey.wasteData.metalWasteOz,
+                        otherWasteOz: survey.wasteData.otherWasteOz,
                         days: survey.reportedDays
                     }
                 });
@@ -125,12 +125,12 @@ function processSurveyData(surveys) {
                 result.transport.push({
                     timestamp: date,
                     data: {
-                        publicTransportDistanceKm: survey.transportData.publicTransportDistanceKm,
-                        airplaneDistanceKm: survey.transportData.airplaneDistanceKm,
-                        trainDistanceKm: survey.transportData.trainDistanceKm,
-                        carDistanceKmPetrol: survey.transportData.carDistanceKmPetrol,
-                        carDistanceKmDiesel: survey.transportData.carDistanceKmDiesel,
-                        carDistanceKmElectric: survey.transportData.carDistanceKmElectric,
+                        publicTransportDistanceMiles: survey.transportData.publicTransportDistanceMiles,
+                        airplaneDistanceMiles: survey.transportData.airplaneDistanceMiles,
+                        trainDistanceMiles: survey.transportData.trainDistanceMiles,
+                        carDistanceMilesPetrol: survey.transportData.carDistanceMilesPetrol,
+                        carDistanceMilesDiesel: survey.transportData.carDistanceMilesDiesel,
+                        carDistanceMilesElectric: survey.transportData.carDistanceMilesElectric,
                         days: survey.reportedDays
                     }
                 });

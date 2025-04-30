@@ -7,6 +7,6 @@ public class ResourceData
     public double WaterConsumptionL { get; set; }
     public double ElectricityConsumptionKWtH { get; set; }
     
-    public const double WaterConsumptionLPerDay = 150;
-    public const double ElectricityConsumptionKWtHPerDay = 10;
+    public const double WaterConsumptionMaxLDay = 140;
+    public const double ElectricityConsumptionMaxKWtHDay = 10;
 }

@@ -4,29 +4,29 @@ public class WasteDataValidator : ISurveyDataValidator<WasteData>
 {
     public void Validate(User user, WasteData data, double days)
     {
-        var foodWasteKgDay = data.FoodWasteKg / days;
+        var foodWasteOzDay = data.FoodWasteOz / days;
         user.FoodWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(foodWasteKgDay, WasteData.FoodWasteKgPerDay);
+            .EvaluateCondition(foodWasteOzDay, WasteData.FoodWasteMaxOzDay);
         
-        var otherWasteKgDay = data.OtherWasteKg / days;
+        var otherWasteOzDay = data.OtherWasteOz / days;
         user.OtherWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(otherWasteKgDay, WasteData.OtherWasteKgPerDay);
+            .EvaluateCondition(otherWasteOzDay, WasteData.OtherWasteMaxOzDay);
         
-        var plasticWasteKgDay = data.PlasticWasteKg / days;
+        var plasticWasteOzDay = data.PlasticWasteOz / days;
         user.PlasticWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(plasticWasteKgDay, WasteData.PlasticWasteKgPerDay);
+            .EvaluateCondition(plasticWasteOzDay, WasteData.PlasticWasteMaxOzDay);
         
-        var glassWasteKgDay = data.GlassWasteKg / days;
+        var glassWasteOzDay = data.GlassWasteOz / days;
         user.GlassWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(glassWasteKgDay, WasteData.GlassWasteKgPerDay);
+            .EvaluateCondition(glassWasteOzDay, WasteData.GlassWasteMaxOzDay);
         
-        var paperWasteKgDay = data.PaperWasteKg / days;
+        var paperWasteOzDay = data.PaperWasteOz / days;
         user.PaperWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(paperWasteKgDay, WasteData.PaperWasteKgPerDay);
+            .EvaluateCondition(paperWasteOzDay, WasteData.PaperWasteMaxOzDay);
         
-        var metalWasteKgDay = data.MetalWasteKg / days;
+        var metalWasteOzDay = data.MetalWasteOz / days;
         user.MetalWasteCondition = SurveyValidationHelper
-            .EvaluateCondition(metalWasteKgDay, WasteData.MetalWasteKgPerDay);
+            .EvaluateCondition(metalWasteOzDay, WasteData.MetalWasteMaxOzDay);
 
         ValidateRecycledWaste(user, data, days);
     }
@@ -35,18 +35,18 @@ public class WasteDataValidator : ISurveyDataValidator<WasteData>
     {
         var plasticRecycledPercentDay = data.PlasticRecycledPercent / days;
         user.PlasticRecycledCondition = SurveyValidationHelper
-            .EvaluateCondition(100 - plasticRecycledPercentDay, WasteData.PlasticRecycledPercentPerDay);
+            .EvaluateCondition(100 - plasticRecycledPercentDay, WasteData.PlasticRecycledPercentDayMin);
         
         var glassRecycledPercentDay = data.GlassRecycledPercent / days;
         user.GlassRecycledCondition = SurveyValidationHelper
-            .EvaluateCondition(100 - glassRecycledPercentDay, WasteData.GlassRecycledPercentPerDay);
+            .EvaluateCondition(100 - glassRecycledPercentDay, WasteData.GlassRecycledPercentDayMin);
         
         var paperRecycledPercentDay = data.PaperRecycledPercent / days;
         user.PaperRecycledCondition = SurveyValidationHelper
-            .EvaluateCondition(100 - paperRecycledPercentDay, WasteData.PaperRecycledPercentPerDay);
+            .EvaluateCondition(100 - paperRecycledPercentDay, WasteData.PaperRecycledPercentDayMin);
         
         var metalRecycledPercentDay = data.MetalRecycledPercent / days;
         user.MetalRecycledCondition = SurveyValidationHelper
-            .EvaluateCondition(100 - metalRecycledPercentDay, WasteData.MetalRecycledPercentPerDay);
+            .EvaluateCondition(100 - metalRecycledPercentDay, WasteData.MetalRecycledPercentDayMin);
     }
 }

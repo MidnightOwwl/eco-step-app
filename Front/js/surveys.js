@@ -56,32 +56,32 @@ function mapFormDataToApiFormat(formId, formData) {
         completedAt: new Date().toISOString(),
         reportedDays: formData.days || 1,
         foodData: {
-            meatEatenKg: 0,
-            plantEatenKg: 0
+            meatEatenOz: 0,
+            plantEatenOz: 0
         },
         wasteData: {
-            foodWasteKg: 0,
-            otherWasteKg: 0,
-            plasticWasteKg: 0,
-            glassWasteKg: 0,
-            paperWasteKg: 0,
-            metalWasteKg: 0,
+            foodWasteOz: 0,
+            otherWasteOz: 0,
+            plasticWasteOz: 0,
+            glassWasteOz: 0,
+            paperWasteOz: 0,
+            metalWasteOz: 0,
             plasticRecycledPercent: 0,
             glassRecycledPercent: 0,
             paperRecycledPercent: 0,
             metalRecycledPercent: 0
         },
         transportData: {
-            publicTransportDistanceKm: 0,
-            airplaneDistanceKm: 0,
-            trainDistanceKm: 0,
-            carDistanceKmPetrol: 0,
-            carDistanceKmDiesel: 0,
-            carDistanceKmElectric: 0,
-            carDistanceKmHybrid: 0,
-            carDistanceKmHydrogen: 0,
-            carDistanceKmMethane: 0,
-            carDistanceKmPropane: 0
+            publicTransportDistanceMiles: 0,
+            airplaneDistanceMiles: 0,
+            trainDistanceMiles: 0,
+            carDistanceMilesPetrol: 0,
+            carDistanceMilesDiesel: 0,
+            carDistanceMilesElectric: 0,
+            carDistanceMilesHybrid: 0,
+            carDistanceMilesHydrogen: 0,
+            carDistanceMilesMethane: 0,
+            carDistanceMilesPropane: 0
         },
         resourceData: {
             waterConsumptionL: 0,
@@ -92,18 +92,18 @@ function mapFormDataToApiFormat(formId, formData) {
     switch(formId) {
         case 'food':
             surveyData.foodData = {
-                meatEatenKg: formData.meat || 0,
-                plantEatenKg: formData.vegetables || 0
+                meatEatenOz: formData.meat || 0,
+                plantEatenOz: formData.vegetables || 0
             };
             break;
             
         case 'wastes':
             surveyData.wasteData = {
-                foodWasteKg: formData.food_waste || 0,
-                plasticWasteKg: formData.plastic || 0,
-                glassWasteKg: formData.glass || 0,
-                paperWasteKg: formData.paper || 0,
-                metalWasteKg: formData.metal || 0,
+                foodWasteOz: formData.food_waste || 0,
+                plasticWasteOz: formData.plastic || 0,
+                glassWasteOz: formData.glass || 0,
+                paperWasteOz: formData.paper || 0,
+                metalWasteOz: formData.metal || 0,
                 plasticRecycledPercent: formData.plastic_recycled || 0,
                 glassRecycledPercent: formData.glass_recycled || 0,
                 paperRecycledPercent: formData.paper_recycled || 0,
@@ -116,8 +116,8 @@ function mapFormDataToApiFormat(formId, formData) {
             const carDistance = formData.car_distance || 0;
             
             surveyData.transportData = {
-                publicTransportDistanceKm: formData.public_transport || 0,
-                [`carDistanceKm${fuelType}`]: carDistance
+                publicTransportDistanceMiles: formData.public_transport || 0,
+                [`carDistanceMiles${fuelType}`]: carDistance
             };
             break;
             
