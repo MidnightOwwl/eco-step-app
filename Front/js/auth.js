@@ -4,7 +4,6 @@ const api = new EcoStepApi();
 
 document.addEventListener('DOMContentLoaded', function() {
     const username = sessionStorage.getItem('username');
-    updateAuthLinks(username);
     
     if (window.location.pathname.includes('profile.html') && username) {
         document.getElementById('user-login').textContent = username;
@@ -44,7 +43,7 @@ function registerUser(form) {
                     console.log('Registration successful');
                     await api.login(username, password);
                     console.log('Login successful');
-                    window.location.href = 'profile.html';
+                    window.location.href = 'main.html';
                 } else {
                     alert('Please enter your login and password');
                 }
@@ -66,7 +65,7 @@ function loginUser(form) {
                 await api.login(username, password);
                 sessionStorage.setItem('username', username);
                 console.log('Login successful');
-                window.location.href = 'profile.html';
+                window.location.href = 'main.html';
             } else {
                 alert('Please enter your login and password');
             }
@@ -74,32 +73,4 @@ function loginUser(form) {
             console.log(error);
         }
     });
-}
-
-function updateAuthLinks(username) {
-    const links = [
-        document.getElementById('profile-link'),
-        document.getElementById('home-link'),
-        document.getElementById('surveys-link'),
-        document.getElementById('data-link')
-    ];
-
-    const authLink = document.getElementById('auth-link');
-    
-    if (authLink) {
-        if (username) {
-            authLink.style.display = 'none';
-            links.forEach(link => {
-                if (link) {
-                    link.style.display = 'inline';
-                }
-            });
-        } else {
-            links.forEach(link => {
-                if(link) {
-                    link.style.display = 'none';
-                }
-            });
-        }
-    }
 }

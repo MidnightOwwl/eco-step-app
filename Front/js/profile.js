@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (user.household) {
                 originalValues = {
-                    houseType: user.household.houseType || '',
+                    houseType: user.household.houseType || '0',
                     tenants: user.household.residentCount || '',
-                    heating: user.household.heatingType || ''
+                    heating: user.household.heatingType || '0'
                 };
 
                 elements.houseType.value = originalValues.houseType;

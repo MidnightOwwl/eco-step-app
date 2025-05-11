@@ -15,7 +15,7 @@ export class EcoStepApi {
             headers['Authorization'] = `Bearer ${this.token}`;
         }
         const options = {
-            cahe: 'no-cache',
+            // cahe: 'no-cache',
             method,
             headers
         }

@@ -1,4 +1,5 @@
 import { EcoStepApi } from './api.js';
+import { MaxValues } from './constants.js';
 
 const charts = {
     main: {},
@@ -63,11 +64,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         initCategories(surveyData);
         setupTabSwitching();
 
-        // Инициализация первого поля для истории
-        const firstField = Object.keys(surveyData[currentCategory][0].data)
-            .filter(k => k !== 'days')[0];
-        updateHistoryChart(surveyData, currentCategory, firstField);
-
     } catch (error) {
         console.error('Error loading survey data:', error);
         showNoData();
@@ -125,12 +121,16 @@ function processSurveyData(surveys) {
                 result.transport.push({
                     timestamp: date,
                     data: {
-                        publicTransportDistanceMiles: survey.transportData.publicTransportDistanceMiles,
-                        airplaneDistanceMiles: survey.transportData.airplaneDistanceMiles,
-                        trainDistanceMiles: survey.transportData.trainDistanceMiles,
-                        carDistanceMilesPetrol: survey.transportData.carDistanceMilesPetrol,
-                        carDistanceMilesDiesel: survey.transportData.carDistanceMilesDiesel,
-                        carDistanceMilesElectric: survey.transportData.carDistanceMilesElectric,
+                        publicTransportMiles: survey.transportData.publicTransportDistanceMiles,
+                        airplaneMiles: survey.transportData.airplaneDistanceMiles,
+                        trainMiles: survey.transportData.trainDistanceMiles,
+                        carMilesPetrol: survey.transportData.carDistanceMilesPetrol,
+                        carMilesDiesel: survey.transportData.carDistanceMilesDiesel,
+                        carMilesElectric: survey.transportData.carDistanceMilesElectric,
+                        carMilesHybrid: survey.transportData.carDistanceMilesHybrid,
+                        carMilesHydrogen: survey.transportData.carDistanceMileHydrogen,
+                        carMilesMethane: survey.transportData.carDistanceMileMethane,
+                        carMilesPropane: survey.transportData.carDistanceMilePropane,
                         days: survey.reportedDays
                     }
                 });
@@ -170,6 +170,7 @@ function initCategories(surveyData) {
         if (surveyData[category].length > 0) {
             createSubcategoryButtons(surveyData, category);
             renderMainChart(category, surveyData[category]);
+            updateHistoryChart(surveyData, category, Object.keys(surveyData[category][0].data).filter(key => key !== 'days')[0])
         }
     });
 }
@@ -208,9 +209,9 @@ function renderMainChart(category, historyData) {
     if (charts.main[category]) charts.main[category].destroy();
 
     const latestData = historyData[historyData.length - 1];
-    const { labels, values } = processChartData(latestData.data);
+    const { labels, values } = processChartData(latestData.data, category);
 
-    // Обновляем заголовок с датой
+
     const dateStr = latestData.timestamp.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
@@ -262,19 +263,44 @@ function renderHistoryChart(surveyData, category, field) {
         return parseFloat(value) / days;
     });
 
+    // Get the max value for this field
+    let maxValue = null;
+    const categoryKey = category === 'costs' ? 'costs' : category; // Handle costs category
+    const fieldKey = field.replace(/Oz|L|KWtH|Miles|Distance/g, ''); // Remove units from field name
+    
+    if (MaxValues[categoryKey] && MaxValues[categoryKey][fieldKey]) {
+        maxValue = MaxValues[categoryKey][fieldKey];
+    }
+
+    const datasets = [{
+        label: `${formatLabel(field)} per day`,
+        data: values,
+        borderColor: '#4CAF50',
+        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+        borderWidth: 2,
+        tension: 0.1,
+        fill: true
+    }];
+
+    // Add max value line if available
+    if (maxValue !== null) {
+        datasets.push({
+            label: 'Max Recommended Value',
+            data: Array(labels.length).fill(maxValue),
+            borderColor: 'rgba(255, 0, 0, 0.7)',
+            backgroundColor: 'rgba(255, 0, 0, 0.1)',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            pointRadius: 0,
+            fill: false
+        });
+    }
+
     charts.history[category] = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
-            datasets: [{
-                label: `${formatLabel(field)} per day`,
-                data: values,
-                borderColor: '#4CAF50',
-                backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                borderWidth: 2,
-                tension: 0.1,
-                fill: true
-            }]
+            datasets: datasets
         },
         options: {
             ...CHART_CONFIG,
@@ -309,17 +335,40 @@ function setupTabSwitching() {
     });
 }
 
-function processChartData(data) {
+function processChartData(data, category) {
     const labels = [];
     const values = [];
     
-    Object.entries(data).forEach(([key, value]) => {
-        if (key !== 'days') {
-            labels.push(formatLabel(key));
-            const normalizedValue = parseFloat(value) / (data.days || 1);
-            values.push(normalizedValue || 0);
-        }
-    });
+    if (category === 'transport') {
+        let gotFType = false;
+        Object.entries(data).forEach(([key, value]) => {
+            if (key !== 'days') {
+                if (key.includes('car')) { 
+                    if (!gotFType && value !== 0) {
+                        labels.push(formatLabel(key));
+                        const normalizedValue = parseFloat(value) / (data.days || 1);
+                        values.push(normalizedValue || 0);
+                        gotFType = true;
+                    }
+                    
+                } else {
+                    labels.push(formatLabel(key));
+                    const normalizedValue = parseFloat(value) / (data.days || 1);
+                    values.push(normalizedValue || 0);
+                }
+
+            }
+        })
+    } else {
+        Object.entries(data).forEach(([key, value]) => {
+            if (key !== 'days') {
+                labels.push(formatLabel(key));
+                const normalizedValue = parseFloat(value) / (data.days || 1);
+                values.push(normalizedValue || 0);
+            }
+        });
+    }
+    
     
     return { labels, values };
 }

@@ -100,6 +100,7 @@ function mapFormDataToApiFormat(formId, formData) {
         case 'wastes':
             surveyData.wasteData = {
                 foodWasteOz: formData.food_waste || 0,
+                otherWasteOz: formData.other || 0,
                 plasticWasteOz: formData.plastic || 0,
                 glassWasteOz: formData.glass || 0,
                 paperWasteOz: formData.paper || 0,
@@ -117,6 +118,8 @@ function mapFormDataToApiFormat(formId, formData) {
             
             surveyData.transportData = {
                 publicTransportDistanceMiles: formData.public_transport || 0,
+                airplaneDistanceMiles: formData.airplane_distance || 0,
+                trainDistanceMiles: formData.train_distance || 0,
                 [`carDistanceMiles${fuelType}`]: carDistance
             };
             break;
