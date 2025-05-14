@@ -8,6 +8,9 @@ let surveys = {}
 document.addEventListener('DOMContentLoaded', async () => {
     const userId = localStorage.getItem('userId');
     updateHomePage(userId);
+
+    if (!userId) return;
+
     
     try {
         surveys = await api.getSurveys(userId);
@@ -462,7 +465,12 @@ function updateHomePage(userId) {
         document.getElementById('profile-link'),
         document.getElementById('home-link'),
         document.getElementById('surveys-link'),
-        document.getElementById('data-link')
+        document.getElementById('data-link'),
+    ];
+
+    const homeData = [
+        document.getElementById('devContainer'),
+        document.getElementById('recentSummaryButton')
     ];
 
     const authLink = document.getElementById('auth-link');
@@ -475,10 +483,23 @@ function updateHomePage(userId) {
                     link.style.display = 'inline';
                 }
             });
+
+            homeData.forEach(element => {
+                if (element) {
+                    element.style.display = 'flex';
+                }
+            });
+
         } else {
             links.forEach(link => {
                 if(link) {
                     link.style.display = 'none';
+                }
+            });
+
+            homeData.forEach(element => {
+                if (element) {
+                    element.style.display = 'none';
                 }
             });
         }
